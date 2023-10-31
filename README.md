@@ -3,7 +3,7 @@
 <img src="https://github.com/van1164/kopring/assets/52437971/15373147-90f6-4d08-8416-9132272188a0" width="20%" height="20%" />
 
 ### [1. 컨트롤러 활용](#컨트롤러-활용)
-
+### [2. JUnit을 사용한 테스트](#JUnit을-사용한-테스트)
 # 컨트롤러 활용
 ``` kotlin
 @Controller
@@ -17,7 +17,7 @@ class MainController {
 }
 ```
 
-# JUnit을 사용한 테스트
+# JUnit을-사용한-테스트
 ``` kotlin
     @Test
     fun mainGetMap() {
