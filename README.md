@@ -17,7 +17,7 @@ class MainController {
 }
 ```
 
-# JUnit을-사용한-테스트
+# JUnit을 사용한 테스트
 ``` kotlin
     @Test
     fun mainGetMap() {
