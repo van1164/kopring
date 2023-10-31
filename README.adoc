@@ -1,10 +1,7 @@
 = kopring
 
-[#img-sunset]
-[link=https://github.com/van1164/kopring/assets/52437971/15373147-90f6-4d08-8416-9132272188a0]
-
-<img src="https://github.com/van1164/kopring/assets/52437971/15373147-90f6-4d08-8416-9132272188a0" width="20%" height="20%" />
-
+ifndef::imagesdir[:imagesdir: images]
+image::kopring.png[scaledwidth=50%]
 :toc:
 
 = 컨트롤러 활용
