@@ -1,8 +1,10 @@
 = kopring
+:toc:
 
 ifndef::imagesdir[:imagesdir: images]
 image::kopring.png[scaledwidth=10%]
-:toc:
+
+
 
 = 컨트롤러 활용
 ``` kotlin
@@ -72,3 +74,13 @@ data class Member (
 		em.close()
 	}
 ----
+
+
+= ERROR
+
+== Unable to load class [org.h2.Driver] 
+h2 사용시 생기는 오류로 build.gradle.kts에 의존성 추가로 해결
+```kotlin
+	runtimeOnly ("com.h2database:h2")
+	testImplementation ("org.springframework.boot:spring-boot-starter-test")
+```
