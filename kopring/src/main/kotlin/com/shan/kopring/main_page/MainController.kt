@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 class MainController {
-
+    val service = MainService()
     @GetMapping("")
     @ResponseBody
     fun mainGetMap(model : Model): String {
