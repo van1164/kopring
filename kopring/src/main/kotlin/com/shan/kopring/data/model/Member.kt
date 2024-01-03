@@ -11,11 +11,11 @@ import jakarta.persistence.Table
 data class Member (
     @Id
     @Column(name = "ID")
-    private val id : String,
+    val id : String,
 
     @Column(name = "NAME")
-    private val name : String,
+    val name : String,
 
     @Column(name = "PASSWORD")
-    private val passWord : String
+    val passWord : String
 )

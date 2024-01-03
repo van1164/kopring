@@ -13,4 +13,11 @@ class MainServiceTest {
         val member = Member("testId","sihwan","testPW")
         service.registerMember(member)
     }
+
+    @Test
+    fun findMemberById() {
+        val testMember = service.findMemberById("testId")
+        assertEquals(testMember.name , "sihwan")
+        assertEquals(testMember.passWord,"testPW")
+    }
 }

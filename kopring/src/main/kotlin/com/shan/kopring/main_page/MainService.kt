@@ -13,4 +13,8 @@ class MainService {
     fun registerMember(member : Member){
         repository.save(member)
     }
+
+    fun findMemberById(id : String): Member {
+        return repository.findById(id)
+    }
 }
