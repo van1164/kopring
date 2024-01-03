@@ -75,6 +75,30 @@ data class Member (
 	}
 ----
 
+=== repository에서 em과 tx 활용
+
+[source, kotlin]
+----
+class MemoryMemberRepository : MemberRepository {
+
+    override val em: EntityManager
+        get() = EntityManagerObject.em
+    override val tx: EntityTransaction
+        get() = EntityManagerObject.tx
+
+    override fun save(member: Member) {
+        tx.begin()
+        em.persist(member)
+        tx.commit()
+    }
+
+    override fun findById(id: String): Member {
+        return em.find(Member::class.java, id)
+    }
+
+}
+
+----
 
 = ERROR
 
