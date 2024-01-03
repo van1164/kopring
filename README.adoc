@@ -84,3 +84,17 @@ h2 사용시 생기는 오류로 build.gradle.kts에 의존성 추가로 해결
 	runtimeOnly ("com.h2database:h2")
 	testImplementation ("org.springframework.boot:spring-boot-starter-test")
 ```
+
+== Unable to locate persister
+JPA가 자동으로 Entity 클래스를 불러오지 못하는 상황이 생겼다.
+
+여러가지 방법을 시도했지만 안됐고, 해결한 방법은 persistence.xml에 직접 class를 추가해준 것이다.
+
+```xml
+    <persistence-unit name="jpaTest">
+        <class> com.shan.kopring.data.model.Member</class> //직접 추가한 부분
+        <properties>
+		'''
+
+persistence.xml
+```
