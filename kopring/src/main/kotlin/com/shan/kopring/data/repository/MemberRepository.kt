@@ -6,7 +6,6 @@ import jakarta.persistence.EntityTransaction
 
 interface  MemberRepository {
     val em :EntityManager
-    val tx : EntityTransaction
     fun save(member: Member)
     fun findById(id : String) : Any
 }

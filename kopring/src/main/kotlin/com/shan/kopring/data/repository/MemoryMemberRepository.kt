@@ -9,18 +9,14 @@ class MemoryMemberRepository : MemberRepository {
 
     override val em: EntityManager
         get() = EntityManagerObject.em
-    override val tx: EntityTransaction
-        get() = EntityManagerObject.tx
+
 
     override fun save(member: Member) {
-        tx.begin()
         em.persist(member)
-        tx.commit()
     }
 
     override fun findById(id: String): Member {
-        val member = em.find(Member::class.java,id)
-        return member
+        return em.find(Member::class.java, id)
     }
 
 }
