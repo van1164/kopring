@@ -59,6 +59,72 @@ data class Member (
     val id : String,
 ----
 
+=== 기본키 생성전략
+
+==== 기본키 직접할당 전략
+
+[source,kotlin]
+----
+val member = Member(  )
+member.setId("id")  // id를 직접 넣어주는 방식
+em.persist(member)
+----
+
+==== IDENTITY 전략
+
+[source,kotlin]
+----
+data class Member (
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id : String,
+----
+
+이 전략을 사용하면 데이터베이스가 자동으로 기본키를 생성하게 하는 전략으로 id를 쿼리를 데이터베이스에 전송한 후에 알 수있다.
+
+영속 상태가 되기위해서는 id가 필요하기 때문에 em.persist()를 호출하는 즉시 데이터베이스에 전송된다.
+
+==== Sequence 전략
+
+[source,kotlin]
+----
+data class Member (
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GENERATOR")
+    val id : String,
+----
+
+유일한 값을 순서대로 생성하는 시퀀스를 사용한 방식으로 오라클, H2등 시퀀스를 제공하는 DB에서만 사용가능.
+
+IDENTITY와 다르게 em.persist()를 호출할 때 시퀀스를  사용해서 id를 조회해서 엔티티에 넣는다. 그후 commit을 하면 그때 디비에 저장된다.
+
+==== 테이블 전략
+
+[source,kotlin]
+----
+data class Member (
+    @Id
+    @GeneratedValue(strategy = GenerationType.Table, generator = "SEQ_GENERATOR")
+    val id : String,
+----
+
+SEQ_GENERATOR라는 이름의 테이블에 다음 시퀀스 값을 가지도록 만들어 놓고 그 테이블을 generator로 매핑한다.
+
+그럼 그 테이블에서 자동적으로 원하는 엔티티에 id를 다음 시퀀스로 연결한다.
+
+==== Auto 전략
+
+[source,kotlin]
+----
+data class Member (
+    @Id
+    @GeneratedValue(strategy = GenerationType.Auto)
+    val id : String,
+----
+
+JPA가 데이터베이스에 따라 위의 전략들중 하나를 자동으로 선택한다.
+
+
 == 엔티티 메니저
 === 엔티티 매니저 설정
 
