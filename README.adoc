@@ -59,6 +59,21 @@ data class Member (
     val id : String,
 ----
 
+=== ENTITY에 JSON객체 사용하기
+
+[source,kotlin]
+----
+@Entity
+@Table(name = "USER")
+data class User(
+    @Type(value = JsonType::class)
+    @Column(name = "vote_list", columnDefinition = "longtext")
+    val voteList: HashMap<String,Any>,
+----
+
+이렇게 Type을 JsonType으로 columnDefinition을 longtext로 설정하고 변수 타입을 HashMap으로 지정해주면 된다.
+
+
 === 기본키 생성전략
 
 ==== 기본키 직접할당 전략
