@@ -197,3 +197,12 @@ JPA가 자동으로 Entity 클래스를 불러오지 못하는 상황이 생겼�
 
 persistence.xml
 ```
+
+== Could not find mysql:mysql-connector-java
+mysql 연동하는 과정에서 생긴 오류이다. 이유는 MySQL 8.0.31부터 클래스가 변경되었다. 따라서
+
+```kotlin
+dependencies {
+	//implementation ("mysql:mysql-connector-java") 변경전
+	implementation ("com.mysql:mysql-connector-j")  // 변경후
+```
