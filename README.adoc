@@ -221,3 +221,12 @@ dependencies {
 	//implementation ("mysql:mysql-connector-java") 변경전
 	implementation ("com.mysql:mysql-connector-j")  // 변경후
 ```
+
+== org.hibernate.PersistentObjectException: detached entity passed to persist
+```kotlin
+data class Member (
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id : String? = null,
+```
+이렇게 기본자생성 전략을 선택한 상태에서 직접 id를 넣어줄 경우 오류 발생함.
