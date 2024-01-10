@@ -36,7 +36,7 @@ class MainController {
 2. 유지 보수 => SQL에 의존하지 않기 때문에 수정할 코드가 줄어듦
 3. 성능  => JPA라이브러리는 수많은 최적화로 내가 짜는거보다 성능 좋음!
 
-== Entity 생성 기초
+= Entity 생성 기초
 
 [source,kotlin]
 ----
@@ -50,7 +50,7 @@ data class Member (
 )
 ----
 
-=== Column 어노테이션에 DDL 조건 추가
+== Column 어노테이션에 DDL 조건 추가
 
 [source,kotlin]
 ----
@@ -59,7 +59,7 @@ data class Member (
     val id : String,
 ----
 
-=== ENTITY에 JSON객체 사용하기
+== ENTITY에 JSON객체 사용하기
 
 [source,kotlin]
 ----
@@ -74,9 +74,9 @@ data class User(
 이렇게 Type을 JsonType으로 columnDefinition을 longtext로 설정하고 변수 타입을 HashMap으로 지정해주면 된다.
 
 
-=== 기본키 생성전략
+== 기본키 생성전략
 
-==== 기본키 직접할당 전략
+=== 기본키 직접할당 전략
 
 [source,kotlin]
 ----
@@ -85,7 +85,7 @@ member.setId("id")  // id를 직접 넣어주는 방식
 em.persist(member)
 ----
 
-==== IDENTITY 전략
+=== IDENTITY 전략
 
 [source,kotlin]
 ----
@@ -99,7 +99,7 @@ data class Member (
 
 영속 상태가 되기위해서는 id가 필요하기 때문에 em.persist()를 호출하는 즉시 데이터베이스에 전송된다.
 
-==== Sequence 전략
+=== Sequence 전략
 
 [source,kotlin]
 ----
@@ -113,7 +113,7 @@ data class Member (
 
 IDENTITY와 다르게 em.persist()를 호출할 때 시퀀스를  사용해서 id를 조회해서 엔티티에 넣는다. 그후 commit을 하면 그때 디비에 저장된다.
 
-==== 테이블 전략
+=== 테이블 전략
 
 [source,kotlin]
 ----
@@ -127,7 +127,7 @@ SEQ_GENERATOR라는 이름의 테이블에 다음 시퀀스 값을 가지도록 
 
 그럼 그 테이블에서 자동적으로 원하는 엔티티에 id를 다음 시퀀스로 연결한다.
 
-==== Auto 전략
+=== Auto 전략
 
 [source,kotlin]
 ----
@@ -139,9 +139,9 @@ data class Member (
 
 JPA가 데이터베이스에 따라 위의 전략들중 하나를 자동으로 선택한다.
 
-== 연관관계 매핑 기초
+= 연관관계 매핑 기초
 
-=== @ManyToOne
+== @ManyToOne
 [source,kotlin]
 ----
 @Entity
@@ -165,7 +165,7 @@ data class Team(
 
 ----
 
-==== 테스트코드
+=== 테스트코드
 
 [source,kotlin]
 ----
@@ -180,7 +180,7 @@ fun createTeamAndMemberIntoTeam(){
 ----
 여기서 중요한 점은 팀을 member에 넣고 영속시키기 전에 팀을 먼저 영속시켜야 한다.
 
-=== 연관관계에 있는 데이터 삭제
+== 연관관계에 있는 데이터 삭제
 데이터를 삭제하고 싶을데 관계를 가지고 있는 테이블이 있으면 그 데이터와 연관된 곳에서 모두 영속을 해지해야 한다.
 
 [source,kotlin]
@@ -196,8 +196,8 @@ fun deleteTeam(teamName : String){
 ----
 이렇게 teamName을 가진 team을 삭제하고 싶을 때는  teamName을 가진 member들을 찾아서 member.team을 null로 바꿔주고 remove 해야한다.
 
-== 엔티티 메니저
-=== 엔티티 매니저 설정
+= 엔티티 메니저
+== 엔티티 매니저 설정
 
 [source,kotlin]
 ----
@@ -205,7 +205,7 @@ fun deleteTeam(teamName : String){
 	val em = emf.createEntityManager()
 ----
 
-=== 트랜잭션 관리
+== 트랜잭션 관리
 
 [source,kotlin]
 ----
@@ -221,7 +221,7 @@ fun deleteTeam(teamName : String){
 	}
 ----
 
-=== repository에서 em과 tx 활용
+== repository에서 em과 tx 활용
 
 [source, kotlin]
 ----
