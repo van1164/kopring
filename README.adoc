@@ -227,6 +227,6 @@ dependencies {
 data class Member (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id : String? = null,
+    val id : Long? = null,
 ```
 이렇게 기본자생성 전략을 선택한 상태에서 직접 id를 넣어줄 경우 오류 발생함.
