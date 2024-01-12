@@ -227,6 +227,57 @@ fun deleteTeam(teamName : String){
 ----
 이렇게 teamName을 가진 team을 삭제하고 싶을 때는  teamName을 가진 member들을 찾아서 member.team을 null로 바꿔주고 remove 해야한다.
 
+= Spring Security
+
+== OAuth 2.0
+
+=== Google
+
+==== OAuth 유저 서비스 커스텀 구현
+[source,kotlin]
+----
+@Service
+class OAuth2UserService : DefaultOAuth2UserService() {
+
+    override fun loadUser(userRequest: OAuth2UserRequest?): OAuth2User {
+	// 동작
+        return super.loadUser(userRequest)
+    }
+}
+----
+OAuth로 사용자 받아오는 서비스 구현
+
+==== SecurityConfig 파일 구현
+[source,kotlin]
+----
+import org.springframework.security.config.annotation.web.invoke
+@Configuration
+@EnableWebSecurity
+class SecurityConfig {
+    @Bean
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http { // kotlin DSL
+            httpBasic { disable() }
+            csrf { disable() }
+            cors { }
+            authorizeRequests {
+                authorize("/user/**", hasAuthority("ROLE_USER"))
+            }
+            oauth2Login {
+                loginPage = "/loginPage"
+                defaultSuccessUrl("/",true)
+                userInfoEndpoint {  }
+            }
+        }
+        return http.build()
+    }
+----
+websecurityconfigureradapter가 Deprecated되면서 Kotlin은 Kotlin DSL을 사용해야 하게 됨.
+
+따라서
+
+import org.springframework.security.config.annotation.web.invoke 를 꼭 넣어줘야함
+
 
 = JPQL
 JPQL은 엔티티 객체를 조회하는 객체지향 쿼리다.
