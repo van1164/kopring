@@ -278,6 +278,34 @@ websecurityconfigureradapter가 Deprecated되면서 Kotlin은 Kotlin DSL을 사�
 
 import org.springframework.security.config.annotation.web.invoke 를 꼭 넣어줘야함
 
+== SuccessHandler 구현
+
+[source,kotlin]
+----
+    @Bean
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http {
+		'''
+            oauth2Login {
+                '''
+                authenticationSuccessHandler = OAuthSuccessHandler()
+            }
+----
+filterChain에 http.oauth2Login 에 authenticationSuccessHandler를 추가하고 핸들러를 등록한다.
+
+[source,kotlin]
+----
+@Component(value = "authenticationSuccessHandler")
+class OAuthSuccessHandler : AuthenticationSuccessHandler {
+    // OAuth로그인후 불러와서 할 동작구현
+    override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
+        val oAuth2User = authentication.principal as OAuth2User
+        val name = oAuth2User.attributes["name"] as String
+        val email = oAuth2User.attributes["email"] as String
+}
+    }
+}
+----
 
 = JPQL
 JPQL은 엔티티 객체를 조회하는 객체지향 쿼리다.
