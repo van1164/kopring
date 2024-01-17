@@ -227,6 +227,90 @@ fun deleteTeam(teamName : String){
 ----
 이렇게 teamName을 가진 team을 삭제하고 싶을 때는  teamName을 가진 member들을 찾아서 member.team을 null로 바꿔주고 remove 해야한다.
 
+= JPQL
+JPQL은 엔티티 객체를 조회하는 객체지향 쿼리다.
+
+== where절로 값찾기
+[source,kotlin]
+----
+fun findTeamByTeamName(teamName : String): Team? {
+	val jpql = "select t from Team t where t.name =: name"
+	return em.createQuery(jpql, Team::class.java)
+	    .setParameter("name", teamName)
+	    .singleResult  // 값이 한개일 경우
+	// .resultList  // 값이 여러개일 경우
+}
+----
+팀이름으로 팀 검색하는 쿼리
+
+== 연관된 테이블 JOIN후 where절로 조건에 맞는 값 찾기
+[source,kotlin]
+----
+fun findMembersByTeamName(teamName: String): MutableList<Member>? {
+	val jpql = "select m from Member m join m.team t where t.name =: teamName"
+	return em.createQuery(jpql, Member::class.java)
+	    .setParameter("teamName", teamName)
+	    .resultList
+}
+----
+특이하게 select *로 작성하면 안된다. Member타입의 m과 m.team타입의 t를 조인하고 where절로 조건을 추가하는 코드이다.
+
+= Redis 사용
+
+== RedisConfig 작성
+[source,kotlin]
+----
+@Configuration(value = "redisConfig")
+@EnableRedisRepositories
+@RequiredArgsConstructor
+class RedisConfig {
+
+    @Value("\${spring.data.redis.host}")
+    var host : String
+
+    @Value("\${spring.data.redis.port}")
+    var port : Int
+
+
+    @Bean
+    fun redisConnectionFactory(): RedisConnectionFactory? {
+        val lettuceConnectionFactory = LettuceConnectionFactory(host, port)
+        lettuceConnectionFactory.start()
+        return lettuceConnectionFactory
+    }
+
+    @Bean
+    fun redisTemplate(): RedisTemplate<String, String> {
+        val redisTemplate = RedisTemplate<String, String>()
+        redisTemplate.connectionFactory = redisConnectionFactory()
+        redisTemplate.keySerializer = StringRedisSerializer()
+        redisTemplate.valueSerializer = StringRedisSerializer()
+        redisTemplate.afterPropertiesSet()
+        return redisTemplate
+    }
+}
+----
+
+== RedisRepository 구현
+
+[source,kotlin]
+----
+@Repository
+class RedisRepository {
+
+    val redisTemplate by lazy { RedisConfig().redisTemplate() }
+
+    fun save(jwt : String, email : String){
+        redisTemplate.opsForValue().set(jwt,email)
+    }
+
+    fun loadByJwt(jwt : String): String? {
+        return redisTemplate.opsForValue().get(jwt)
+    }
+
+}
+----
+
 = Spring Security
 
 == OAuth 2.0
@@ -306,34 +390,6 @@ class OAuthSuccessHandler : AuthenticationSuccessHandler {
     }
 }
 ----
-
-= JPQL
-JPQL은 엔티티 객체를 조회하는 객체지향 쿼리다.
-
-== where절로 값찾기
-[source,kotlin]
-----
-fun findTeamByTeamName(teamName : String): Team? {
-	val jpql = "select t from Team t where t.name =: name"
-	return em.createQuery(jpql, Team::class.java)
-	    .setParameter("name", teamName)
-	    .singleResult  // 값이 한개일 경우
-	// .resultList  // 값이 여러개일 경우
-}
-----
-팀이름으로 팀 검색하는 쿼리
-
-== 연관된 테이블 JOIN후 where절로 조건에 맞는 값 찾기
-[source,kotlin]
-----
-fun findMembersByTeamName(teamName: String): MutableList<Member>? {
-	val jpql = "select m from Member m join m.team t where t.name =: teamName"
-	return em.createQuery(jpql, Member::class.java)
-	    .setParameter("teamName", teamName)
-	    .resultList
-}
-----
-특이하게 select *로 작성하면 안된다. Member타입의 m과 m.team타입의 t를 조인하고 where절로 조건을 추가하는 코드이다.
 
 = 엔티티 메니저
 == 엔티티 매니저 설정
