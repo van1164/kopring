@@ -481,3 +481,7 @@ data class Member (
     val id : Long? = null,
 ```
 이렇게 기본자생성 전략을 선택한 상태에서 직접 id를 넣어줄 경우 오류 발생함.
+
+==  Type javax.servlet.http.HttpServletRequest not present
+Spring Boot 3.XX 버전에서 Swagger를 적용시킬 때 생긴 오류
+
