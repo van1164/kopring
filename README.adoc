@@ -485,3 +485,14 @@ data class Member (
 ==  Type javax.servlet.http.HttpServletRequest not present
 Spring Boot 3.XX 버전에서 Swagger를 적용시킬 때 생긴 오류
 
+```kotlin
+implementation("io.springfox:springfox-boot-starter:3.0.0")  // springfox 업데이트 안됨
+```
+
+springfox가 아닌 springdoc을 사용하면 오류 없이 사용가능하다.
+
+```kotlin
+//swagger
+implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+implementation("io.swagger.core.v3:swagger-annotations:2.2.16")
+```
