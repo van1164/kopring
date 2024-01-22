@@ -441,6 +441,64 @@ class MemoryMemberRepository : MemberRepository {
 
 ----
 
+= AWS
+
+== S3
+
+=== S3Config 작성
+```kotlin
+@Configuration
+class S3Config(
+        @Value("\${aws.s3.accessKey}")
+        private val accessKey: String,
+        @Value("\${aws.s3.secretKey}")
+        private val secretKey: String,
+) {
+    @Bean
+    fun amazonS3Client(): AmazonS3 {
+        return AmazonS3ClientBuilder.standard()
+                .withCredentials(
+                        AWSStaticCredentialsProvider(BasicAWSCredentials(accessKey, secretKey))
+                )
+                .withRegion(Regions.AP_NORTHEAST_2)
+                .build()
+    }
+}
+```
+
+=== coroutine사용한 여러 이미지 업로드 컨트롤러
+```kotlin
+@RestController
+@RequestMapping("/")
+class S3TestController(val amazonS3Client : AmazonS3) {
+    @PostMapping("/multipart-files")
+    suspend fun uploadMultipleFilesWithCoroutine(
+            @RequestPart("uploadFiles") multipartFiles: List<MultipartFile>,
+            @RequestParam type: String,
+    ) = withContext(Dispatchers.IO) {
+        val uploadJobs = multipartFiles.map {
+            val objectMetadata = ObjectMetadata().apply {
+                this.contentType = it.contentType
+                this.contentLength = it.size
+            }
+            async {
+                val putObjectRequest = PutObjectRequest(
+                        "vote-share",
+                        UUID.randomUUID().toString() + type,
+                        it.inputStream,
+                        objectMetadata,
+                )
+                amazonS3Client.putObject(putObjectRequest)
+            }
+        }
+        uploadJobs.awaitAll()
+        return@withContext "test Complete"
+    }
+}
+```
+
+
+
 = ERROR
 
 == Unable to load class [org.h2.Driver] 
