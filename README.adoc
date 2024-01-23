@@ -554,3 +554,13 @@ springfox가 아닌 springdoc을 사용하면 오류 없이 사용가능하다.
 implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 implementation("io.swagger.core.v3:swagger-annotations:2.2.16")
 ```
+
+== com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+docker에서 mysql을 연동할 때생긴 오류
+
+application.properties에서 mysql주소를 localhost가 아닌 host.docker.internal로 설정시 해결
+```
+spring.datasource.url=jdbc:mysql://host.docker.internal:3306/vote_share?useSSL=false
+```
+
