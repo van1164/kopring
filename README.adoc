@@ -401,6 +401,54 @@ class OAuthSuccessHandler : AuthenticationSuccessHandler {
 }
 ----
 
+== Filter추가로 JWT 토큰 검증하기
+
+==== addFilterBefore로 추가한다
+
+[source,kotlin]
+----
+class SecurityConfig(val oAuthSuccessHandler: OAuthSuccessHandler, val oAuthFailureHandler: OAuthFailureHandler) {
+    @Bean
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+        http {
+	'''
+            addFilterBefore<UsernamePasswordAuthenticationFilter> (JwtAuthenticationFilter(JwtTokenProvider()))
+        }
+        return http.build()
+    }
+}
+----
+
+==== JwtAuthenticationFilter 구현
+
+[source,kotlin]
+----
+class JwtAuthenticationFilter(
+        private val jwtTokenProvider: JwtTokenProvider
+) : GenericFilterBean() {
+    override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
+        val token = resolveToken(request as HttpServletRequest)
+
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            val authentication = jwtTokenProvider.getAuthentication(token)
+            SecurityContextHolder.getContext().authentication = authentication
+            println("doFilterChain:$authentication")
+        }
+        chain?.doFilter(request, response)
+    }
+
+    private fun resolveToken(request : HttpServletRequest) : String? {
+        val bearerToken = request.getHeader("Authorization")
+        return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+            bearerToken.substring(7)
+        } else {
+            null
+        }
+    }
+
+}
+----
+
 = 엔티티 메니저
 == 엔티티 매니저 설정
 
