@@ -555,6 +555,31 @@ class S3TestController(val amazonS3Client : AmazonS3) {
 }
 ```
 
+= JUNIT
+
+== Controller테스트
+
+mockMvc를 사용해서 컨트롤러 테스트를 할 수 있다.
+
+``` kotlin
+
+lateinit var mockMvc: MockMvc
+
+@Test
+@WithMockUser()
+fun getMyPage() {
+	mockMvc.perform (
+	    get("URL")
+		.contentType(MediaType.APPLICATION_JSON)
+		.header("Authorization","TestJWT")
+	).andExpect(status().isOk)
+	    .andExpect(jsonPath("$.email").value(testEmail))
+	    .andExpect(jsonPath("$.accessToken").value(testJwt))
+    .andExpect(jsonPath("$.nickName").value(testName))
+
+}
+```
+
 
 
 = ERROR
