@@ -264,6 +264,41 @@ val voteList = em.createQuery(jpql,DTO명::class.java).resultList
 ----
 여기서 특이한점은 JAVA와 같이 new를 사용하여야하고 DTO만 쓰면 안되며 패키지까지 써주어야한다.
 
+== 서브쿼리
+
+=== EXSITS
+
+서브쿼리 결과가 존재하면 참.
+
+```kotlin
+val jqpl = "select m from Member m"
+		+ "where exists(select t from m.team t where t.name = 'A')"
+```
+
+=== EXSITS
+
+서브쿼리 결과가 존재하면 참.
+
+```kotlin
+val jqpl = "select m from Member m"
+		+ "where exists(select t from m.team t where t.name = 'A')"
+```
+
+=== ALL, ANY
+
+ALL은 서브쿼리 테이블 모든 값에 대해 조건이 만족해야 참.
+ANY는 하나만 만족해도 참.
+
+```kotlin
+val jqpl = "select m from Member m"
+		+ "where m.count > ALL (select n.count from NewMember n)" // m.count가 모든 n.count보다 커야지만 참.
+
+
+val jqpl2 = "select m from Member m"
+		+ "where m.count > ANY (select n.count from NewMember n)" // m.count가 n.count 하나보다만 크면 참.
+```
+
+
 = Redis 사용
 
 == RedisConfig 작성
