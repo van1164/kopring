@@ -1,7 +1,7 @@
-= kopring
-
 ifndef::imagesdir[:imagesdir: images]
 image::kopring.png[scaledwidth=10%]
+
+= kopring
 
 :toc:
 
