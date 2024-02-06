@@ -1,5 +1,9 @@
 = kopring
-:toc:
+:sectnum:
+:toc: right
+:toclevels: 1~3
+:toc-title: Kopring 목차
+
 
 ifndef::imagesdir[:imagesdir: images]
 image::kopring.png[scaledwidth=10%]
