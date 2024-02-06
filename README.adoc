@@ -653,6 +653,31 @@ fun getMyPage() {
 }
 ```
 
+== 비동기 처리된 컨트롤러 테스트방법 (feat. test Response가 빈값일 경우 이에 해당함.)
+
+==== 위와 다르게 perform을 먼저하고 asyncDispatch를 통해서 진행해야한다.
+
+``` kotlin
+val mvcResult = mockMvc.perform(
+    multipart("/api/v1/vote/create_vote")
+	.file(testImage)
+	.file(testImages)
+	.file(voteDTO)
+	.contentType(MediaType.MULTIPART_FORM_DATA)
+	.header("Authorization", testJwt.grantType + " " + testJwt.accessToken)
+    ).andExpect(status().isOk)
+    .andExpect(request().asyncStarted())
+    .andExpect { request().asyncResult("body") }
+    .andReturn()
+
+mockMvc.perform(asyncDispatch(mvcResult))
+    .andExpect(status().isOk)
+    .andExpect(jsonPath("$.반환값").조건)
+
+
+```
+
+[참고] https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework/async-requests.html
 
 
 = ERROR
