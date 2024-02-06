@@ -264,6 +264,30 @@ val voteList = em.createQuery(jpql,DTO명::class.java).resultList
 ----
 여기서 특이한점은 JAVA와 같이 new를 사용하여야하고 DTO만 쓰면 안되며 패키지까지 써주어야한다.
 
+== NamedQuery로 정적쿼리 사용하기
+
+Entity에 NamedQuery를 작성하고
+
+```kotlin
+@Entity
+@NoArgsConstructor
+@NamedQuery(
+    name = "User.findByEmail",
+    query = "select u from User u where u.email =: email"
+)
+@Table(name = "USER")
+data class User(
+'''
+)
+```
+
+다음과 같이 사용하면 된다.
+
+```kotlin
+val user = em.createNamedQuery("User.findByEmail",User::class.java)
+		.setParameter("email,email).getSingleResult
+```
+
 == 서브쿼리
 
 === EXSITS
@@ -296,6 +320,16 @@ val jqpl = "select m from Member m"
 
 val jqpl2 = "select m from Member m"
 		+ "where m.count > ANY (select n.count from NewMember n)" // m.count가 n.count 하나보다만 크면 참.
+```
+
+= Criteria
+
+JPQL보다 동적쿼리를 안전하게 생성하는 빌더 API
+
+== 쿼리 생성
+
+```kotlin
+
 ```
 
 
