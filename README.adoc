@@ -1,8 +1,10 @@
 = kopring
-:toc:
 
 ifndef::imagesdir[:imagesdir: images]
 image::kopring.png[scaledwidth=10%]
+
+:toc:
+
 
 
 
