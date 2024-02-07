@@ -326,6 +326,7 @@ val jqpl2 = "select m from Member m"
 		+ "where m.count > ANY (select n.count from NewMember n)" // m.count가 n.count 하나보다만 크면 참.
 ```
 
+
 = Criteria
 
 JPQL보다 동적쿼리를 안전하게 생성하는 빌더 API
@@ -749,3 +750,15 @@ spring.datasource.url=jdbc:mysql://my:3306/database-name
  <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql:3306/database-name"/>
 ```
 
+
+== 연관된 테이블 참조시 무한 루프와 StackOverFlow가 생기는 경우
+
+Json으로 바꾸는 과정에서 서로 무한으로 불러오기 때문에 생기는 문제.
+@JsonBackRefernece를 추가해주어서 그 컬럼을 json으로 바꾸지 않을 수있음.
+
+``` kotlin
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonBackReference
+    val teamList: MutableList<Team> = mutableListOf(),
+```
