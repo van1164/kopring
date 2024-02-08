@@ -330,10 +330,34 @@ val jqpl2 = "select m from Member m"
 = Criteria
 
 JPQL보다 동적쿼리를 안전하게 생성하는 빌더 API
+단, 가독성이 좀 떨어짐..
 
 == 쿼리 생성
 
 ```kotlin
+val cb = em.criteriaBuilder  //CriteriaBuilder
+val cq = cb.createQuery(User::class.java) //CriteriaQuery
+```
+
+==== Select
+
+===== jpql코드
+
+```kotln
+val userJpql = "select distinct u from User u where u.email =: email"
+val user = em.createQuery(userJpql, User::class.java).setParameter("email", email).singleResult
+```
+
+===== Criteria 코드
+
+```kotln
+val cb = em.criteriaBuilder
+val cq = cb.createQuery(User::class.java).apply {
+    val u = from(User::class.java)
+    select(u)
+    where(cb.equal(u.get<String>("email"),email))
+}
+val user = em.createQuery(cq).singleResult
 
 ```
 
