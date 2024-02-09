@@ -34,13 +34,13 @@ class MainController {
     }
 ```
 
-= JPA  활용
+= JPA 
 == JPA 사용하는 이유
 1. 생산성 => JDBC API와 SQL 문을 모두 작성해야하는 문제 해결
 2. 유지 보수 => SQL에 의존하지 않기 때문에 수정할 코드가 줄어듦
 3. 성능  => JPA라이브러리는 수많은 최적화로 내가 짜는거보다 성능 좋음!
 
-= Entity 생성 기초
+== Entity 생성 기초
 
 [source,kotlin]
 ----
@@ -54,7 +54,7 @@ data class Member (
 )
 ----
 
-== Column 어노테이션에 DDL 조건 추가
+=== Column 어노테이션에 DDL 조건 추가
 
 [source,kotlin]
 ----
@@ -63,7 +63,7 @@ data class Member (
     val id : String,
 ----
 
-== ENTITY에 JSON객체 사용하기
+=== ENTITY에 JSON객체 사용하기
 
 [source,kotlin]
 ----
@@ -231,10 +231,10 @@ fun deleteTeam(teamName : String){
 ----
 이렇게 teamName을 가진 team을 삭제하고 싶을 때는  teamName을 가진 member들을 찾아서 member.team을 null로 바꿔주고 remove 해야한다.
 
-= JPQL
+== JPQL
 JPQL은 엔티티 객체를 조회하는 객체지향 쿼리다.
 
-== where절로 값찾기
+=== where절로 값찾기
 [source,kotlin]
 ----
 fun findTeamByTeamName(teamName : String): Team? {
@@ -247,7 +247,7 @@ fun findTeamByTeamName(teamName : String): Team? {
 ----
 팀이름으로 팀 검색하는 쿼리
 
-== 연관된 테이블 JOIN후 where절로 조건에 맞는 값 찾기
+=== 연관된 테이블 JOIN후 where절로 조건에 맞는 값 찾기
 [source,kotlin]
 ----
 fun findMembersByTeamName(teamName: String): MutableList<Member>? {
@@ -259,7 +259,7 @@ fun findMembersByTeamName(teamName: String): MutableList<Member>? {
 ----
 특이하게 select *로 작성하면 안된다. Member타입의 m과 m.team타입의 t를 조인하고 where절로 조건을 추가하는 코드이다.
 
-== jpql로 조회한 값을 DTO와 연결하기
+=== jpql로 조회한 값을 DTO와 연결하기
 [source,kotlin]
 ----
 val jpql = "select new 패키지명.DTO명(i.id,i.name) from Item i "
@@ -268,7 +268,7 @@ val voteList = em.createQuery(jpql,DTO명::class.java).resultList
 ----
 여기서 특이한점은 JAVA와 같이 new를 사용하여야하고 DTO만 쓰면 안되며 패키지까지 써주어야한다.
 
-== NamedQuery로 정적쿼리 사용하기
+=== NamedQuery로 정적쿼리 사용하기
 
 Entity에 NamedQuery를 작성하고
 
@@ -292,18 +292,9 @@ val user = em.createNamedQuery("User.findByEmail",User::class.java)
 		.setParameter("email,email).getSingleResult
 ```
 
-== 서브쿼리
+=== 서브쿼리
 
-=== EXSITS
-
-서브쿼리 결과가 존재하면 참.
-
-```kotlin
-val jqpl = "select m from Member m"
-		+ "where exists(select t from m.team t where t.name = 'A')"
-```
-
-=== EXSITS
+==== EXSITS
 
 서브쿼리 결과가 존재하면 참.
 
@@ -312,7 +303,7 @@ val jqpl = "select m from Member m"
 		+ "where exists(select t from m.team t where t.name = 'A')"
 ```
 
-=== ALL, ANY
+==== ALL, ANY
 
 ALL은 서브쿼리 테이블 모든 값에 대해 조건이 만족해야 참.
 ANY는 하나만 만족해도 참.
@@ -327,12 +318,12 @@ val jqpl2 = "select m from Member m"
 ```
 
 
-= Criteria
+== Criteria
 
 JPQL보다 동적쿼리를 안전하게 생성하는 빌더 API
 단, 가독성이 좀 떨어짐..
 
-== 쿼리 생성
+=== 쿼리 생성
 
 ```kotlin
 val cb = em.criteriaBuilder  //CriteriaBuilder
