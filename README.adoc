@@ -588,6 +588,33 @@ class MemoryMemberRepository : MemberRepository {
 
 ----
 
+== @Transactional과 @PersistenceContext를 활용한 중복코드 제거
+
+==== 엔티티 매니저 의존성 주입 @PersistenceContext
+
+``` kotlin
+@Repository
+class BaseRepository {
+    @PersistenceContext
+    lateinit var em : EntityManager
+}
+```
+
+==== Transaction 반복코드 @Transactional로 대체
+
+``` kotlin
+/*
+tx.begin()
+---
+tx.commit()
+*/
+
+위와 같은 역할을 @Transactional이 대신함.
+
+@Transactional
+class UserService(val userRepository: UserRepository):BaseService() {
+```
+
 = AWS
 
 == S3
