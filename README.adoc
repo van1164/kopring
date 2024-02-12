@@ -615,6 +615,14 @@ tx.commit()
 class UserService(val userRepository: UserRepository):BaseService() {
 ```
 
+== 코루틴을 사용하는 suspend function은 서비스 계층에서 한번에 @Transactional이 적용되지 않음.
+
+=== 적용방법 추가예정
+
+==== 현재 방식
+
+===== 각 Repository 함수마다 @Transactional을 추가해준다.
+
 = AWS
 
 == S3
