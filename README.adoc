@@ -731,6 +731,16 @@ mockMvc.perform(asyncDispatch(mvcResult))
 [참고] https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework/async-requests.html
 
 
+= Spring Batch
+
+== 의존성 추가
+
+```kotlin
+	//Spring Batch
+	implementation("org.springframework.boot:spring-batch-test")
+	implementation("org.springframework.boot:spring-boot-starter-batch")
+```
+
 = ERROR
 
 == Unable to load class [org.h2.Driver] 
