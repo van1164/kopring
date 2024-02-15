@@ -538,6 +538,71 @@ class JwtAuthenticationFilter(
 }
 ----
 
+= Spring Batch
+
+== 의존성 추가
+
+```kotlin
+	//Spring Batch
+	implementation("org.springframework.boot:spring-batch-test")
+	implementation("org.springframework.boot:spring-boot-starter-batch")
+```
+
+==
+
+== 기초 Configuration
+
+```kotlin
+@Configuration
+class JobConfig(
+    private val jobRepository: JobRepository,
+    private val transactionManager: PlatformTransactionManager,
+    private val tasklet: VoteTasklet
+) {
+    @Bean
+    fun job(): Job {
+        return JobBuilder("job", jobRepository)
+            .start(step())
+            .build()
+    }
+    @Bean
+    fun step(): Step {
+        return StepBuilder("step", jobRepository)
+            .tasklet(tasklet, transactionManager)
+            .build()
+    }
+}
+```
+
+== 기초 Tasklet 정의
+```kotlin
+@StepScope
+@Component
+class VoteTasklet(
+    val voteRepository: VoteRepository,
+    val popularVoteRepository: PopularVoteRepository
+): Tasklet {
+    val log = KotlinLogging.logger{}
+    override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus? {
+        log.info { "tasklet start" }
+
+        //read
+        val popularVoteList = voteRepository.loadPopularVote()
+
+
+        //process
+        val popularVoteIdList = popularVoteList.map{it.id}
+
+
+        //write
+        popularVoteRepository.resetAndSave(popularVoteIdList)
+
+        return RepeatStatus.FINISHED
+    }
+}
+```
+
+
 = 엔티티 메니저
 == 엔티티 매니저 설정
 
@@ -731,15 +796,6 @@ mockMvc.perform(asyncDispatch(mvcResult))
 [참고] https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework/async-requests.html
 
 
-= Spring Batch
-
-== 의존성 추가
-
-```kotlin
-	//Spring Batch
-	implementation("org.springframework.boot:spring-batch-test")
-	implementation("org.springframework.boot:spring-boot-starter-batch")
-```
 
 = ERROR
 
