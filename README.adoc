@@ -579,28 +579,57 @@ class JobConfig(
 @StepScope
 @Component
 class VoteTasklet(
-    val voteRepository: VoteRepository,
-    val popularVoteRepository: PopularVoteRepository
+    val userRepository: UserRepository,
+    val userRankingRepository: UserRankingRepository
 ): Tasklet {
     val log = KotlinLogging.logger{}
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus? {
         log.info { "tasklet start" }
 
         //read
-        val popularVoteList = voteRepository.loadPopularVote()
+        val rankingList = userRepository.loadRanking()
 
 
         //process
-        val popularVoteIdList = popularVoteList.map{it.id}
+        val userIdList = rankingList.map{it.id}
 
 
         //write
-        popularVoteRepository.resetAndSave(popularVoteIdList)
+        userRankingRepository.resetAndSave(userIdList)
 
         return RepeatStatus.FINISHED
     }
 }
 ```
+
+== @Scheduled를 사용해 주기적으로 실행하기
+
+```kotlin
+@Component
+class SchedulerConfig(
+    val jobLauncher: JobLauncher,
+    val jobConfig: JobConfig
+) {
+    val log = KotlinLogging.logger {  }
+    @Scheduled(fixedRate  = 1000) //임시로 10초마다 생성
+    fun popularVoteRenew(){
+        log.info{"RankingRenew Start"}
+        try {
+            jobLauncher.run(jobConfig.job(),JobParameters())
+        } catch (e: JobExecutionAlreadyRunningException) {
+            log.error(e.message)
+        } catch (e: JobInstanceAlreadyCompleteException) {
+            log.error(e.message)
+        } catch (e: JobParametersInvalidException) {
+            log.error(e.message)
+        } catch (e: JobRestartException) {
+            log.error(e.message)
+        }
+        log.info{"RankingRenew End"}
+    }
+}
+```
+
 
 
 = 엔티티 메니저
