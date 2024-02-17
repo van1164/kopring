@@ -907,3 +907,14 @@ Json으로 바꾸는 과정에서 서로 무한으로 불러오기 때문에 생
     @JsonBackReference
     val teamList: MutableList<Team> = mutableListOf(),
 ```
+
+== org.springframework.dao.CannotAcquireLockException: PreparedStatementCallback;
+
+==== Spring Batch + @Scheduled 사용시 DeadLock과 함께 이러한 오류가 발생하였다.
+
+```kotlinn
+@EnableBatchProcessing
+class JobConfig(
+```
+
+==== @EnableBatchProcessing 이걸 Job 설정 클래스 맨위에 작성해주어야한다.
