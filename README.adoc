@@ -352,6 +352,68 @@ val user = em.createQuery(cq).singleResult
 
 ```
 
+== QueryDSL
+
+=== 환경 설정
+```kotlin
+plugins {
+	'''
+	kotlin("kapt") version "1.9.22"
+	idea
+}
+
+
+dependencies {
+	//querydsl
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+}
+
+idea {
+	module {
+		val kaptMain = file("${layout.buildDirectory}/generated/querydsl")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
+	}
+}
+
+kapt {
+	javacOptions {
+		option("querydsl.entityAccessors", true)
+	}
+	arguments {
+		arg("plugin", "com.querydsl.apt.jpa.JPAAnnotationProcessor")
+	}
+}
+
+
+```
+
+=== Projection을 활용한 DTO SELECT 예제
+
+```kotlin
+fun newLoadPopularVote(): MutableList<PopularVoteResponseDTO> {
+	val voteList = queryFactory.select(
+	    Projections.constructor(
+		PopularVoteResponseDTO::class.java,
+		vote.title,
+		vote.voteUrl,
+		vote.id,
+		vote.mainImageUrl,
+		vote.allVoteSum	
+	    )			 	      //select
+	).from(vote)
+	    .where(vote.publicShare.isTrue)  //where
+	    .orderBy(			    //order
+		vote.allVoteSum.desc()
+	    )
+	    .limit(5)			   //limit
+	    .fetch()
+	return voteList
+}
+```
+
+
 
 = Redis 사용
 
