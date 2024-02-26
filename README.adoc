@@ -692,7 +692,101 @@ class SchedulerConfig(
 }
 ```
 
+= Kafka
 
+== Config파일 작성
+
+=== KafkaTemplate 빈 등록
+
+[source,kotlin]
+----
+@Configuration
+@EnableKafka
+class KafkaConfig(
+    @Value("\${spring.kafka.bootstrap-servers}")
+    var bootStrapServers : String
+) {
+
+
+    @Bean
+    fun kafkaTemplate() : KafkaTemplate<String, Any> {
+        return KafkaTemplate<String,Any>(producerFactory());
+    }
+----
+
+=== ProducerFactory 빈 등록
+
+[source,kotlin]
+----
+@Bean
+fun producerFactory() : ProducerFactory<String,Any>{
+	val producerConfig = HashMap<String,Any>()
+	producerConfig[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootStrapServers
+	producerConfig[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+	producerConfig[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+	return DefaultKafkaProducerFactory(producerConfig)
+}
+----
+
+=== ConsumerFactory 빈 등록
+
+[source,kotlin]
+----
+@Bean
+fun consumerFactory() : ConsumerFactory<String,Any>{
+	val consumerConfig = HashMap<String,Any>()
+	consumerConfig[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootStrapServers
+	consumerConfig[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+	consumerConfig[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+	return DefaultKafkaConsumerFactory(consumerConfig)
+}
+----
+
+=== ConcurrentKafkaListenerContainerFactory 빈 등록
+
+==== Consumer가 Listner를 통해 메시지가 들어오는지 받아올 수 있도록 하는 객체
+
+[source,kotlin]
+----
+@Bean
+fun kafkaListenerContainerFactory() : ConcurrentKafkaListenerContainerFactory<String, Any>{
+	val conCurrentListener = ConcurrentKafkaListenerContainerFactory<String,Any>()
+	conCurrentListener.consumerFactory = consumerFactory()
+	return conCurrentListener
+}
+----
+
+== 프로듀서 서비스 구현
+
+[source,kotlin]
+----
+@Service
+class KafkaProducerService(
+    val kafkaTemplate : KafkaTemplate<String,Any>
+) {
+
+    val testTopic = "testTopic"
+
+    fun pub(msg : String){
+        kafkaTemplate.send(testTopic,msg)
+    }
+
+}
+----
+
+== 컨슈머 리스너 구현
+
+[source,kotlin]
+----
+@Service
+class KafkaConsumerService {
+    private val log = KotlinLogging.logger {  }
+    @KafkaListener(topics= ["testTopic"], groupId = "kafkaTest")
+    fun consumer(msg: String) {
+        log.info { "KafkaConsumer: $msg" }
+    }
+}
+----
 
 = 엔티티 메니저
 == 엔티티 매니저 설정
