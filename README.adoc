@@ -788,6 +788,54 @@ class KafkaConsumerService {
 }
 ----
 
+= Kafka Streams
+
+== 환경구성
+
+```kotlin
+@EnableKafkaStreams
+@EnableKafka
+@Configuration
+class KafkaConfig(
+    @Value("\${spring.kafka.bootstrap-servers}")
+    var bootStrapServers : String
+) {
+    @Bean(name = [KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME])
+    fun kafkaStreamConfig() : KafkaStreamsConfiguration{
+        val kStreamConfig = hashMapOf<String,Any>()
+        kStreamConfig[StreamsConfig.APPLICATION_ID_CONFIG] = "stream-test"
+        kStreamConfig[StreamsConfig.BOOTSTRAP_SERVERS_CONFIG] = bootStrapServers
+        kStreamConfig[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
+        kStreamConfig[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
+        kStreamConfig[StreamsConfig.NUM_STREAM_THREADS_CONFIG] =1
+        return KafkaStreamsConfiguration(kStreamConfig)
+    }
+}
+```
+
+== 서비스 기초구성
+
+```kotlin
+@Service
+class KafkaStreamService {
+
+    val stringSerde: Serde<String> = Serdes.String()
+
+    @Autowired
+    fun buildPipeline(sb : StreamsBuilder) {
+        val kStream = sb.stream("testTopic", Consumed.with(stringSerde, stringSerde))
+        kStream.filter { key, value ->
+            value.contains("test")
+        }.to("testStream")
+    }
+}
+```
+
+```text
+testTopic으로 들어오는 메시지를 컨슘해서 값에 
+test가 들어가는 값을 testStream Topic으로 메시지를 보낸다.
+```
+
 = 엔티티 메니저
 == 엔티티 매니저 설정
 
