@@ -9,31 +9,6 @@ ifndef::imagesdir[:imagesdir: images]
 image::kopring.png[scaledwidth=10%]
 
 
-
-= 컨트롤러 활용
-``` kotlin
-@Controller
-class MainController {
-
-    @GetMapping("")
-    @ResponseBody
-    fun mainGetMap(model : Model): String {
-        return "test"
-    }
-}
-```
-
-= JUnit을 사용한 테스트
-``` kotlin
-    @Test
-    fun mainGetMap() {
-        println(">> Assert getMapping()")
-        val entity = restTemplate.getForEntity<String>("/")
-        assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(entity.body).contains("test")
-    }
-```
-
 = JPA 
 == JPA 사용하는 이유
 1. 생산성 => JDBC API와 SQL 문을 모두 작성해야하는 문제 해결
