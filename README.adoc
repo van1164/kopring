@@ -18,6 +18,9 @@ image::kopring.png[scaledwidth=10%]
 
 == Mono 와 Flux
 
+> Mono와 Flux의 차이는, 내부의 아이템의 수이다.
+Flux는 0개~N개의 아이템을 방출할 수 있는 객체라면, Mono는 0개~1개의 아이템을 방출할 수 있는 객체이다.
+
 작성예정
 
 = JPA 
