@@ -12,9 +12,9 @@ image::kopring.png[scaledwidth=10%]
 
  작성예정
 
-== Blockig I/O 와 Non-Blocking I/O
+== 동기와 비동기 & Blockig과 Non-Blocking
 
-작성예정
+image::동기와 비동기 & Blockig과 Non-Blocking.png[scaledwidth=10%]
 
 == Mono 와 Flux
 
