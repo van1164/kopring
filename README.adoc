@@ -1105,9 +1105,30 @@ Json으로 바꾸는 과정에서 서로 무한으로 불러오기 때문에 생
 
 ==== Spring Batch + @Scheduled 사용시 DeadLock과 함께 이러한 오류가 발생하였다.
 
-```kotlinn
+```kotlin
 @EnableBatchProcessing
 class JobConfig(
 ```
 
 ==== @EnableBatchProcessing 이걸 Job 설정 클래스 맨위에 작성해주어야한다.
+
+== Error : Timeout waiting for connection from pool
+
+```text
+amazonS3 *S3Object* 를 *close* 해주지 않았기 때문에 다음과 같은 오류가 발생하였다. 
+
+S3Object는 Closeable을 implements하고 있기 때문에 *try-with-resources* 를 사용할 수있다.
+```
+*try-with-resources* 란 AutoCloseable 인터페이스를 구현하고 있는 자원에 대해 try안에 그 자원을 넣으면 작업이 끝나면 자동으로 close해주는 것을 말한다.
+
+
+
+==== 코틀린에서 사용법!
+코틀린에서는 use 고차함수를 통해 사용할 수 있다.
+```kotlin
+fun readFirstLine(path: String): String {
+    BufferedReader(FileReader(path)).use { br ->
+        return br.readLine()
+    }
+}
+```
