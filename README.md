@@ -1,4 +1,7 @@
 # Kopring
+![image](https://github.com/van1164/kopring/assets/52437971/8403ddda-5f72-4df8-9f5d-69cc6aa02b70)
+
+
 ## 목차
 
 ### 1. [WebFlux](#webflux)
@@ -14,7 +17,7 @@
 
 ## 동기와 비동기 & Blockig과 Non-Blocking
 
-image::동기와 비동기 & Blockig과 Non-Blocking.png[scaledwidth=10%]
+![image](https://github.com/van1164/kopring/assets/52437971/282b9aa6-8e54-4d84-8cee-c2e4b9a475af)
 
 ## Mono 와 Flux
 
