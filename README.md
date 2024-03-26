@@ -1,38 +1,44 @@
-= kopring
-:sectnum:
-:toc: right
-:toclevels: 1~3
-:toc-title: Kopring 목차
 
 
-ifndef::imagesdir[:imagesdir: images]
-image::kopring.png[scaledwidth=10%]
+# WebFlux
 
-= WebFlux
-
- 작성예정
-
-== 동기와 비동기 & Blockig과 Non-Blocking
+## 동기와 비동기 & Blockig과 Non-Blocking
 
 image::동기와 비동기 & Blockig과 Non-Blocking.png[scaledwidth=10%]
 
-== Mono 와 Flux
+## Mono 와 Flux
 
 > Mono와 Flux의 차이는, 내부의 아이템의 수이다.
 Flux는 0개~N개의 아이템을 방출할 수 있는 객체라면, Mono는 0개~1개의 아이템을 방출할 수 있는 객체이다.
 
-작성예정
+### Mono
+> 0부터 1개의 item을 subscriber에게 전달한다.
+`subscriber`에게 **onComplete**, **onError** signal을 전달하면 연결이 종료된다.
+**onNext**가 호출되면 곧바로 onComplete 이벤트가 전달된다.
 
-= JPA 
-== JPA 사용하는 이유
+### Flux
+> 0부터 n개의 item을 subscriber에게 전달한다.
+`subscriber`에게 **onComplete**, **onError** signal을 전달하면 연결이 종료된다.
+
+### ❓ Flux도 하나의 값을 보낼 수 있는데, 그럼 Mono는 왜 필요할까?
+물론, Flux가 Mono의 역할을 대부분 대체할 수 있다고 생각한다. 그럼에도 Mono가 필요한 이유는 다음과 같다.
+
+- #### 반드시 하나의 값을 필요로하는 경우
+유저가 작성한 게시글의 숫자
+http 응답 객체
+
+- ####  값이 하나이므로 onNext 이후 바로 onComplete를 호출하면 되기때문에 구현이 간단하다.
+- ####  Subscriber도 최대 1개의 item이 전달된다는 것이 보장되므로 더 간결하게 코드작성이 가능.
+
+# JPA 
+## JPA 사용하는 이유
 1. 생산성 => JDBC API와 SQL 문을 모두 작성해야하는 문제 해결
 2. 유지 보수 => SQL에 의존하지 않기 때문에 수정할 코드가 줄어듦
 3. 성능  => JPA라이브러리는 수많은 최적화로 내가 짜는거보다 성능 좋음!
 
-== Entity 생성 기초
+## Entity 생성 기초
 
-[source,kotlin]
-----
+```kotlin
 @Entity
 @Table (name = "MEMBER")
 data class Member (
@@ -41,112 +47,101 @@ data class Member (
     private val id : String?,
 
 )
-----
+```
 
-=== Column 어노테이션에 DDL 조건 추가
+### Column 어노테이션에 DDL 조건 추가
 
-[source,kotlin]
-----
+```kotlin
     @Id
     @Column(name = "ID", nullable = false, length = 16)
     val id : String,
-----
+```
 
-=== ENTITY에 JSON객체 사용하기
+### ENTITY에 JSON객체 사용하기
 
-[source,kotlin]
-----
+```kotlin
 @Entity
 @Table(name = "USER")
 data class User(
     @Type(value = JsonType::class)
     @Column(name = "vote_list", columnDefinition = "longtext")
     val voteList: HashMap<String,Any>,
-----
+```
 
 이렇게 Type을 JsonType으로 columnDefinition을 longtext로 설정하고 변수 타입을 HashMap으로 지정해주면 된다.
 
 
-== 기본키 생성전략
+## 기본키 생성전략
 
-=== 기본키 직접할당 전략
+### 기본키 직접할당 전략
 
-[source,kotlin]
-----
+```kotlin
 val member = Member(  )
 member.setId("id")  // id를 직접 넣어주는 방식
 em.persist(member)
-----
+```
+### IDENTITY 전략
 
-=== IDENTITY 전략
-
-[source,kotlin]
-----
+```kotlin
 data class Member (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id : String,
-----
+```
 
 이 전략을 사용하면 데이터베이스가 자동으로 기본키를 생성하게 하는 전략으로 id를 쿼리를 데이터베이스에 전송한 후에 알 수있다.
 
 영속 상태가 되기위해서는 id가 필요하기 때문에 em.persist()를 호출하는 즉시 데이터베이스에 전송된다.
 
-=== Sequence 전략
+### Sequence 전략
 
-[source,kotlin]
-----
+```kotlin
 data class Member (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GENERATOR")
     val id : String,
-----
+```
 
 유일한 값을 순서대로 생성하는 시퀀스를 사용한 방식으로 오라클, H2등 시퀀스를 제공하는 DB에서만 사용가능.
 
 IDENTITY와 다르게 em.persist()를 호출할 때 시퀀스를  사용해서 id를 조회해서 엔티티에 넣는다. 그후 commit을 하면 그때 디비에 저장된다.
 
-=== 테이블 전략
+### 테이블 전략
 
-[source,kotlin]
-----
+```kotlin
 data class Member (
     @Id
     @GeneratedValue(strategy = GenerationType.Table, generator = "SEQ_GENERATOR")
     val id : String,
-----
+```
 
 SEQ_GENERATOR라는 이름의 테이블에 다음 시퀀스 값을 가지도록 만들어 놓고 그 테이블을 generator로 매핑한다.
 
 그럼 그 테이블에서 자동적으로 원하는 엔티티에 id를 다음 시퀀스로 연결한다.
 
-=== Auto 전략
+### Auto 전략
 
-[source,kotlin]
-----
+```kotlin
 data class Member (
     @Id
     @GeneratedValue(strategy = GenerationType.Auto)
     val id : String,
-----
-
+```
 JPA가 데이터베이스에 따라 위의 전략들중 하나를 자동으로 선택한다.
 
-== 연관관계 매핑 기초
+## 연관관계 매핑 기초
 
-=== @ManyToOne
-[source,kotlin]
-----
+### @ManyToOne
+```kotlin
 @Entity
 @Table (name = "MEMBER")
 data class Member (
     @ManyToOne
     @JoinColumn(name = "TEAM_ID") // 매핑할 컬럼명
     var team : Team? = null  // 매핑할 객체 선언
-----
+```
 
-[source,kotlin]
-----
+```kotlin
 @Entity
 @Table(name = "TEAM")
 data class Team(
@@ -155,36 +150,33 @@ data class Team(
     @Column(name = "TEAM_ID") // 매핑되는 컬럼명
     val id :Long? =null,
 )
+```
 
-----
+#### 테스트코드
 
-==== 테스트코드
-
-[source,kotlin]
-----
+```kotlin
 @Test
 fun createTeamAndMemberIntoTeam(){
 	val team = service.createNewTeam("team1")  // Team객체 생성후 영속하는 함수
 	val member = Member(name = "sihwan", passWord = "testPW")
 	service.registerMember(member,team)
 }
-----
+```
+
 여기서 중요한 점은 팀을 member에 넣고 영속시키기 전에 팀을 먼저 영속시켜야 한다.
 
-=== @OneToMany + 양방향 매핑
+### @OneToMany + 양방향 매핑
 
-[source,kotlin]
-----
+```kotlin
 @OneToMany(mappedBy = "team")
 val members : MutableList<Member> = mutableListOf<Member>()
 }
-----
+```
 mappedBy는 연관관계를 갖는 다른 테이블에 필드를 쓴다.
 
 mappedBy를 넣은 쪽은 연관관계의 주인이 아니기 때문에 수정을 할 수 없다.
 
-[source,kotlin]
-----
+```kotlin
 @Entity
 @Table (name = "MEMBER")
 class Member (
@@ -200,15 +192,14 @@ class Member (
         team.members.add(this)
     }
 }
-----
+```
 
 team을 넣는다고 해서 연관 테이블에 리스트에 추가되지 않기 때문에 직접 넣어주어야 한다.
 
-=== 연관관계에 있는 데이터 삭제
+### 연관관계에 있는 데이터 삭제
 데이터를 삭제하고 싶을데 관계를 가지고 있는 테이블이 있으면 그 데이터와 연관된 곳에서 모두 영속을 해지해야 한다.
 
-[source,kotlin]
-----
+```kotlin
 fun deleteTeam(teamName : String){
 	val members = jpqlQuery.findMembersByTeamName(teamName)
 	members?.forEach {
@@ -217,15 +208,14 @@ fun deleteTeam(teamName : String){
 	val team =jpqlQuery.findTeamByTeamName(teamName)
 	em.remove(team)
 }
-----
+```
 이렇게 teamName을 가진 team을 삭제하고 싶을 때는  teamName을 가진 member들을 찾아서 member.team을 null로 바꿔주고 remove 해야한다.
 
-== JPQL
+## JPQL
 JPQL은 엔티티 객체를 조회하는 객체지향 쿼리다.
 
-=== where절로 값찾기
-[source,kotlin]
-----
+### where절로 값찾기
+```kotlin
 fun findTeamByTeamName(teamName : String): Team? {
 	val jpql = "select t from Team t where t.name =: name"
 	return em.createQuery(jpql, Team::class.java)
@@ -233,31 +223,29 @@ fun findTeamByTeamName(teamName : String): Team? {
 	    .singleResult  // 값이 한개일 경우
 	// .resultList  // 값이 여러개일 경우
 }
-----
+```
 팀이름으로 팀 검색하는 쿼리
 
-=== 연관된 테이블 JOIN후 where절로 조건에 맞는 값 찾기
-[source,kotlin]
-----
+### 연관된 테이블 JOIN후 where절로 조건에 맞는 값 찾기
+```kotlin
 fun findMembersByTeamName(teamName: String): MutableList<Member>? {
 	val jpql = "select m from Member m join m.team t where t.name =: teamName"
 	return em.createQuery(jpql, Member::class.java)
 	    .setParameter("teamName", teamName)
 	    .resultList
 }
-----
+```
 특이하게 select *로 작성하면 안된다. Member타입의 m과 m.team타입의 t를 조인하고 where절로 조건을 추가하는 코드이다.
 
-=== jpql로 조회한 값을 DTO와 연결하기
-[source,kotlin]
-----
+### jpql로 조회한 값을 DTO와 연결하기
+```kotlin
 val jpql = "select new 패키지명.DTO명(i.id,i.name) from Item i "
 val voteList = em.createQuery(jpql,DTO명::class.java).resultList
 }
-----
+```
 여기서 특이한점은 JAVA와 같이 new를 사용하여야하고 DTO만 쓰면 안되며 패키지까지 써주어야한다.
 
-=== NamedQuery로 정적쿼리 사용하기
+### NamedQuery로 정적쿼리 사용하기
 
 Entity에 NamedQuery를 작성하고
 
@@ -281,9 +269,9 @@ val user = em.createNamedQuery("User.findByEmail",User::class.java)
 		.setParameter("email,email).getSingleResult
 ```
 
-=== 서브쿼리
+### 서브쿼리
 
-==== EXSITS
+#### EXSITS
 
 서브쿼리 결과가 존재하면 참.
 
@@ -292,7 +280,7 @@ val jqpl = "select m from Member m"
 		+ "where exists(select t from m.team t where t.name = 'A')"
 ```
 
-==== ALL, ANY
+#### ALL, ANY
 
 ALL은 서브쿼리 테이블 모든 값에 대해 조건이 만족해야 참.
 ANY는 하나만 만족해도 참.
@@ -307,28 +295,28 @@ val jqpl2 = "select m from Member m"
 ```
 
 
-== Criteria
+## Criteria
 
 JPQL보다 동적쿼리를 안전하게 생성하는 빌더 API
 단, 가독성이 좀 떨어짐..
 
-=== 쿼리 생성
+### 쿼리 생성
 
 ```kotlin
 val cb = em.criteriaBuilder  //CriteriaBuilder
 val cq = cb.createQuery(User::class.java) //CriteriaQuery
 ```
 
-==== Select
+###= Select
 
-===== jpql코드
+##### jpql코드
 
 ```kotln
 val userJpql = "select distinct u from User u where u.email =: email"
 val user = em.createQuery(userJpql, User::class.java).setParameter("email", email).singleResult
 ```
 
-===== Criteria 코드
+##### Criteria 코드
 
 ```kotln
 val cb = em.criteriaBuilder
@@ -341,9 +329,9 @@ val user = em.createQuery(cq).singleResult
 
 ```
 
-== QueryDSL
+## QueryDSL
 
-=== 환경 설정
+### 환경 설정
 ```kotlin
 plugins {
 	'''
@@ -378,7 +366,7 @@ kapt {
 
 ```
 
-=== Projection을 활용한 DTO SELECT 예제
+### Projection을 활용한 DTO SELECT 예제
 
 ```kotlin
 fun newLoadPopularVote(): MutableList<PopularVoteResponseDTO> {
@@ -404,11 +392,10 @@ fun newLoadPopularVote(): MutableList<PopularVoteResponseDTO> {
 
 
 
-= Redis 사용
+# Redis 사용
 
-== RedisConfig 작성
-[source,kotlin]
-----
+## RedisConfig 작성
+```kotlin
 @Configuration(value = "redisConfig")
 @EnableRedisRepositories
 @RequiredArgsConstructor
@@ -438,12 +425,10 @@ class RedisConfig {
         return redisTemplate
     }
 }
-----
+```
+## RedisRepository 구현
 
-== RedisRepository 구현
-
-[source,kotlin]
-----
+```kotlin
 @Repository
 class RedisRepository {
 
@@ -458,17 +443,16 @@ class RedisRepository {
     }
 
 }
-----
+```
 
-= Spring Security
+# Spring Security
 
-== OAuth 2.0
+## OAuth 2.0
 
-=== Google
+### Google
 
-==== OAuth 유저 서비스 커스텀 구현
-[source,kotlin]
-----
+#### OAuth 유저 서비스 커스텀 구현
+```kotlin
 @Service
 class OAuth2UserService : DefaultOAuth2UserService() {
 
@@ -477,13 +461,12 @@ class OAuth2UserService : DefaultOAuth2UserService() {
         return super.loadUser(userRequest)
     }
 }
-----
+```
 OAuth로 사용자 받아오는 서비스 구현
 
-==== SecurityConfig 파일 구현
+#### SecurityConfig 파일 구현
 
-[source,kotlin]
-----
+```kotlin
 import org.springframework.security.config.annotation.web.invoke
 @Configuration
 @EnableWebSecurity
@@ -505,17 +488,16 @@ class SecurityConfig {
         }
         return http.build()
     }
-----
+```
 websecurityconfigureradapter가 Deprecated되면서 Kotlin은 Kotlin DSL을 사용해야 하게 됨.
 
 따라서
 
 import org.springframework.security.config.annotation.web.invoke 를 꼭 넣어줘야함
 
-== SuccessHandler 구현
+## SuccessHandler 구현
 
-[source,kotlin]
-----
+```kotlin
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
@@ -524,11 +506,10 @@ import org.springframework.security.config.annotation.web.invoke 를 꼭 넣어�
                 '''
                 authenticationSuccessHandler = OAuthSuccessHandler()
             }
-----
+```
 filterChain에 http.oauth2Login 에 authenticationSuccessHandler를 추가하고 핸들러를 등록한다.
 
-[source,kotlin]
-----
+```kotlin
 @Component(value = "authenticationSuccessHandler")
 class OAuthSuccessHandler : AuthenticationSuccessHandler {
     // OAuth로그인후 불러와서 할 동작구현
@@ -539,14 +520,12 @@ class OAuthSuccessHandler : AuthenticationSuccessHandler {
 }
     }
 }
-----
+```
+## Filter추가로 JWT 토큰 검증하기
 
-== Filter추가로 JWT 토큰 검증하기
+#### addFilterBefore로 추가한다
 
-==== addFilterBefore로 추가한다
-
-[source,kotlin]
-----
+```kotlin
 class SecurityConfig(val oAuthSuccessHandler: OAuthSuccessHandler, val oAuthFailureHandler: OAuthFailureHandler) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -557,12 +536,11 @@ class SecurityConfig(val oAuthSuccessHandler: OAuthSuccessHandler, val oAuthFail
         return http.build()
     }
 }
-----
+```
 
-==== JwtAuthenticationFilter 구현
+#### JwtAuthenticationFilter 구현
 
-[source,kotlin]
-----
+```kotlin
 class JwtAuthenticationFilter(
         private val jwtTokenProvider: JwtTokenProvider
 ) : GenericFilterBean() {
@@ -587,11 +565,11 @@ class JwtAuthenticationFilter(
     }
 
 }
-----
+```
 
-= Spring Batch
+# Spring Batch
 
-== 의존성 추가
+## 의존성 추가
 
 ```kotlin
 	//Spring Batch
@@ -599,9 +577,8 @@ class JwtAuthenticationFilter(
 	implementation("org.springframework.boot:spring-boot-starter-batch")
 ```
 
-==
 
-== 기초 Configuration
+## 기초 Configuration
 
 ```kotlin
 @Configuration
@@ -625,7 +602,7 @@ class JobConfig(
 }
 ```
 
-== 기초 Tasklet 정의
+## 기초 Tasklet 정의
 ```kotlin
 @StepScope
 @Component
@@ -653,7 +630,7 @@ class VoteTasklet(
 }
 ```
 
-== @Scheduled를 사용해 주기적으로 실행하기
+## @Scheduled를 사용해 주기적으로 실행하기
 
 ```kotlin
 @Component
@@ -681,14 +658,13 @@ class SchedulerConfig(
 }
 ```
 
-= Kafka
+# Kafka
 
-== Config파일 작성
+## Config파일 작성
 
-=== KafkaTemplate 빈 등록
+### KafkaTemplate 빈 등록
 
-[source,kotlin]
-----
+```kotlin
 @Configuration
 @EnableKafka
 class KafkaConfig(
@@ -701,12 +677,11 @@ class KafkaConfig(
     fun kafkaTemplate() : KafkaTemplate<String, Any> {
         return KafkaTemplate<String,Any>(producerFactory());
     }
-----
+```
 
-=== ProducerFactory 빈 등록
+### ProducerFactory 빈 등록
 
-[source,kotlin]
-----
+```kotlin
 @Bean
 fun producerFactory() : ProducerFactory<String,Any>{
 	val producerConfig = HashMap<String,Any>()
@@ -715,12 +690,11 @@ fun producerFactory() : ProducerFactory<String,Any>{
 	producerConfig[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
 	return DefaultKafkaProducerFactory(producerConfig)
 }
-----
+```
 
-=== ConsumerFactory 빈 등록
+### ConsumerFactory 빈 등록
 
-[source,kotlin]
-----
+```kotlin
 @Bean
 fun consumerFactory() : ConsumerFactory<String,Any>{
 	val consumerConfig = HashMap<String,Any>()
@@ -729,26 +703,23 @@ fun consumerFactory() : ConsumerFactory<String,Any>{
 	consumerConfig[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
 	return DefaultKafkaConsumerFactory(consumerConfig)
 }
-----
+```
 
-=== ConcurrentKafkaListenerContainerFactory 빈 등록
+### ConcurrentKafkaListenerContainerFactory 빈 등록
 
-==== Consumer가 Listner를 통해 메시지가 들어오는지 받아올 수 있도록 하는 객체
+#### Consumer가 Listner를 통해 메시지가 들어오는지 받아올 수 있도록 하는 객체
 
-[source,kotlin]
-----
+```kotlin
 @Bean
 fun kafkaListenerContainerFactory() : ConcurrentKafkaListenerContainerFactory<String, Any>{
 	val conCurrentListener = ConcurrentKafkaListenerContainerFactory<String,Any>()
 	conCurrentListener.consumerFactory = consumerFactory()
 	return conCurrentListener
 }
-----
+```
+## 프로듀서 서비스 구현
 
-== 프로듀서 서비스 구현
-
-[source,kotlin]
-----
+```kotlin
 @Service
 class KafkaProducerService(
     val kafkaTemplate : KafkaTemplate<String,Any>
@@ -761,12 +732,11 @@ class KafkaProducerService(
     }
 
 }
-----
+```
 
-== 컨슈머 리스너 구현
+## 컨슈머 리스너 구현
 
-[source,kotlin]
-----
+```kotlin
 @Service
 class KafkaConsumerService {
     private val log = KotlinLogging.logger {  }
@@ -775,11 +745,11 @@ class KafkaConsumerService {
         log.info { "KafkaConsumer: $msg" }
     }
 }
-----
+```
 
-= Kafka Streams
+# Kafka Streams
 
-== 환경구성
+## 환경구성
 
 ```kotlin
 @EnableKafkaStreams
@@ -802,7 +772,7 @@ class KafkaConfig(
 }
 ```
 
-== 서비스 기초구성
+## 서비스 기초구성
 
 ```kotlin
 @Service
@@ -825,19 +795,17 @@ testTopic으로 들어오는 메시지를 컨슘해서 값에
 test가 들어가는 값을 testStream Topic으로 메시지를 보낸다.
 ```
 
-= 엔티티 메니저
-== 엔티티 매니저 설정
+# 엔티티 메니저
+## 엔티티 매니저 설정
 
-[source,kotlin]
-----
+```kotlin
 	val emf = Persistence.createEntityManagerFactory("jpaTest")
 	val em = emf.createEntityManager()
-----
+```
 
-== 트랜잭션 관리
+## 트랜잭션 관리
 
-[source,kotlin]
-----
+```kotlin
 	val tx = em.transaction
 	try {
 		tx.begin()
@@ -848,12 +816,11 @@ test가 들어가는 값을 testStream Topic으로 메시지를 보낸다.
 	} finally {
 		em.close()
 	}
-----
+```
 
-== repository에서 em과 tx 활용
+## repository에서 em과 tx 활용
 
-[source, kotlin]
-----
+```kotlin
 class MemoryMemberRepository : MemberRepository {
 
     override val em: EntityManager
@@ -872,12 +839,11 @@ class MemoryMemberRepository : MemberRepository {
     }
 
 }
+```
 
-----
+## @Transactional과 @PersistenceContext를 활용한 중복코드 제거
 
-== @Transactional과 @PersistenceContext를 활용한 중복코드 제거
-
-==== 엔티티 매니저 의존성 주입 @PersistenceContext
+#### 엔티티 매니저 의존성 주입 @PersistenceContext
 
 ``` kotlin
 @Repository
@@ -887,7 +853,7 @@ class BaseRepository {
 }
 ```
 
-==== Transaction 반복코드 @Transactional로 대체
+#### Transaction 반복코드 @Transactional로 대체
 
 ``` kotlin
 /*
@@ -902,19 +868,19 @@ tx.commit()
 class UserService(val userRepository: UserRepository):BaseService() {
 ```
 
-== 코루틴을 사용하는 suspend function은 서비스 계층에서 한번에 @Transactional이 적용되지 않음.
+## 코루틴을 사용하는 suspend function은 서비스 계층에서 한번에 @Transactional이 적용되지 않음.
 
-=== 적용방법 추가예정
+### 적용방법 추가예정
 
-==== 현재 방식
+#### 현재 방식
 
-===== 각 Repository 함수마다 @Transactional을 추가해준다.
+##### 각 Repository 함수마다 @Transactional을 추가해준다.
 
-= AWS
+# AWS
 
-== S3
+## S3
 
-=== S3Config 작성
+### S3Config 작성
 ```kotlin
 @Configuration
 class S3Config(
@@ -935,7 +901,7 @@ class S3Config(
 }
 ```
 
-=== coroutine사용한 여러 이미지 업로드 컨트롤러
+### coroutine사용한 여러 이미지 업로드 컨트롤러
 ```kotlin
 @RestController
 @RequestMapping("/")
@@ -966,9 +932,9 @@ class S3TestController(val amazonS3Client : AmazonS3) {
 }
 ```
 
-= JUNIT
+# JUNIT
 
-== Controller테스트
+## Controller테스트
 
 mockMvc를 사용해서 컨트롤러 테스트를 할 수 있다.
 
@@ -991,9 +957,9 @@ fun getMyPage() {
 }
 ```
 
-== 비동기 처리된 컨트롤러 테스트방법 (feat. test Response가 빈값일 경우 이에 해당함.)
+## 비동기 처리된 컨트롤러 테스트방법 (feat. test Response가 빈값일 경우 이에 해당함.)
 
-==== 위와 다르게 perform을 먼저하고 asyncDispatch를 통해서 진행해야한다.
+#### 위와 다르게 perform을 먼저하고 asyncDispatch를 통해서 진행해야한다.
 
 ``` kotlin
 val mvcResult = mockMvc.perform(
@@ -1019,16 +985,16 @@ mockMvc.perform(asyncDispatch(mvcResult))
 
 
 
-= ERROR
+# ERROR
 
-== Unable to load class [org.h2.Driver] 
+## Unable to load class [org.h2.Driver] 
 h2 사용시 생기는 오류로 build.gradle.kts에 의존성 추가로 해결
 ```kotlin
 	runtimeOnly ("com.h2database:h2")
 	testImplementation ("org.springframework.boot:spring-boot-starter-test")
 ```
 
-== Unable to locate persister
+## Unable to locate persister
 JPA가 자동으로 Entity 클래스를 불러오지 못하는 상황이 생겼다.
 
 여러가지 방법을 시도했지만 안됐고, 해결한 방법은 persistence.xml에 직접 class를 추가해준 것이다.
@@ -1042,7 +1008,7 @@ JPA가 자동으로 Entity 클래스를 불러오지 못하는 상황이 생겼�
 persistence.xml
 ```
 
-== Could not find mysql:mysql-connector-java
+## Could not find mysql:mysql-connector-java
 mysql 연동하는 과정에서 생긴 오류이다. 이유는 MySQL 8.0.31부터 클래스가 변경되었다. 따라서
 
 ```kotlin
@@ -1051,7 +1017,7 @@ dependencies {
 	implementation ("com.mysql:mysql-connector-j")  // 변경후
 ```
 
-== org.hibernate.PersistentObjectException: detached entity passed to persist
+## org.hibernate.PersistentObjectException: detached entity passed to persist
 ```kotlin
 data class Member (
     @Id
@@ -1060,7 +1026,7 @@ data class Member (
 ```
 이렇게 기본자생성 전략을 선택한 상태에서 직접 id를 넣어줄 경우 오류 발생함.
 
-==  Type javax.servlet.http.HttpServletRequest not present
+##  Type javax.servlet.http.HttpServletRequest not present
 Spring Boot 3.XX 버전에서 Swagger를 적용시킬 때 생긴 오류
 
 ```kotlin
@@ -1075,13 +1041,13 @@ implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 implementation("io.swagger.core.v3:swagger-annotations:2.2.16")
 ```
 
-== com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+## com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
 docker에서 mysql을 연동할 때생긴 오류
 
 application.properties에서 mysql주소를 localhost가 아닌 mysql 컨테이너 이름으로 설정시 DNS사용으로 해결
 
-==== 이때 중요한건 application.properties와 persistence.xml에서도 디비를 변경해주어야한다.
+#### 이때 중요한건 application.properties와 persistence.xml에서도 디비를 변경해주어야한다.
 
 ```
 spring.datasource.url=jdbc:mysql://my:3306/database-name
@@ -1089,7 +1055,7 @@ spring.datasource.url=jdbc:mysql://my:3306/database-name
 ```
 
 
-== 연관된 테이블 참조시 무한 루프와 StackOverFlow가 생기는 경우
+## 연관된 테이블 참조시 무한 루프와 StackOverFlow가 생기는 경우
 
 Json으로 바꾸는 과정에서 서로 무한으로 불러오기 때문에 생기는 문제.
 @JsonBackRefernece를 추가해주어서 그 컬럼을 json으로 바꾸지 않을 수있음.
@@ -1101,18 +1067,18 @@ Json으로 바꾸는 과정에서 서로 무한으로 불러오기 때문에 생
     val teamList: MutableList<Team> = mutableListOf(),
 ```
 
-== org.springframework.dao.CannotAcquireLockException: PreparedStatementCallback;
+## org.springframework.dao.CannotAcquireLockException: PreparedStatementCallback;
 
-==== Spring Batch + @Scheduled 사용시 DeadLock과 함께 이러한 오류가 발생하였다.
+#### Spring Batch + @Scheduled 사용시 DeadLock과 함께 이러한 오류가 발생하였다.
 
 ```kotlin
 @EnableBatchProcessing
 class JobConfig(
 ```
 
-==== @EnableBatchProcessing 이걸 Job 설정 클래스 맨위에 작성해주어야한다.
+#### @EnableBatchProcessing 이걸 Job 설정 클래스 맨위에 작성해주어야한다.
 
-== Error : Timeout waiting for connection from pool
+## Error : Timeout waiting for connection from pool
 
 ```text
 amazonS3 *S3Object* 를 *close* 해주지 않았기 때문에 다음과 같은 오류가 발생하였다. 
@@ -1123,7 +1089,7 @@ S3Object는 Closeable을 implements하고 있기 때문에 *try-with-resources* 
 
 
 
-==== 코틀린에서 사용법!
+#### 코틀린에서 사용법!
 코틀린에서는 use 고차함수를 통해 사용할 수 있다.
 ```kotlin
 fun readFirstLine(path: String): String {
