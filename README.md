@@ -1192,3 +1192,28 @@ fun readFirstLine(path: String): String {
     }
 }
 ```
+## com.amazonaws.ResetException: The request to the service failed with a retryable reason, but resetting the request input stream has failed. See exception.getExtraInfo or debug-level logging for the original failure that caused this retry.;  If the request involves an input stream, the maximum stream buffer size can be configured via request.getRequestClientOptions().setReadLimit(int)
+
+### 이 오류는 AWSS3에 파일을 PUT할 때 inputStream으로 업로드할 때 생기는 버그라는 것을 알아냈다. 아래는 참고한 사이트이다.
+https://stackoverflow.com/questions/30121218/aws-s3-uploading-large-file-fails-with-resetexception-failed-to-reset-the-requ
+
+```kotlin
+        val thumbNailFile = File(thumbNailPath)
+        val request = PutObjectRequest(
+            "video-stream-spring",
+            thumbNailPath,
+            thumbNailFile.inputStream(),
+            ObjectMetadata()
+        )
+```
+### 이렇게 작성했던 코드를
+
+```kotlin
+        val thumbNailFile = File(thumbNailPath)
+        val request = PutObjectRequest(
+            "video-stream-spring",
+            thumbNailPath,
+            thumbNailFile,
+        )
+```
+### inputStream이 아닌 그냥 파일 자체로 업로드하면 오류가 해결되었다.
