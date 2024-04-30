@@ -12,8 +12,9 @@
 ### 6. [Spring Batch](#spring-batch)
 ### 7. [Kafka](#kafka)
 ### 8. [AWS](#aws)
-### 9. [JUNIT](#junit)
-### 10. [ERROR](#error)
+### 9. [Elastic Search](#elastic-search)
+### 10. [JUNIT](#junit)
+### 11. [ERROR](#error)
 # WebFlux
 
 ## 동기와 비동기 & Blockig과 Non-Blocking
@@ -1214,6 +1215,34 @@ class UserService(val userRepository: UserRepository):BaseService() {
 #### 현재 방식
 
 ##### 각 Repository 함수마다 @Transactional을 추가해준다.
+
+# Elastic Search
+
+## Dependency
+```kotlin
+implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+```
+
+## Config
+```kotlin
+@Configuration
+@Import(DataSourceAutoConfiguration::class)
+class ElasticConfig : ElasticsearchConfiguration() {
+    override fun clientConfiguration(): ClientConfiguration {
+        return ClientConfiguration.builder()
+            .connectedTo("localhost:9200")
+            .build()
+    }
+}
+```
+
+## Repository
+```kotlin
+@Repository
+interface TestElasticSearch : ElasticsearchRepository<TestUserElastic,Long> {
+    //fun getTestUserElasticsByEmailContains(email: String) : List<TestUserElastic>
+}
+```
 
 # AWS
 
