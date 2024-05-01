@@ -784,6 +784,7 @@ class RedisRepository {
 
 }
 ```
+# ReactiveRedis
 
 ## ReactiveRedisConfig
 ```kotlin
