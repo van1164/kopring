@@ -785,6 +785,48 @@ class RedisRepository {
 }
 ```
 
+## ReactiveRedisConfig
+```kotlin
+    @Bean
+fun reactiveRedisConnectionFactory(): ReactiveRedisConnectionFactory {
+	val lettuceConnectionFactory = LettuceConnectionFactory(host, port)
+	lettuceConnectionFactory.start()
+	return lettuceConnectionFactory
+}
+```
+
+## ReactiveRedisRepository
+```kotlin
+@Repository
+class RedisR2dbcRepository(
+    private val redisTemplate : ReactiveRedisTemplate<String,String>,
+    private val mapper: ObjectMapper
+) {
+
+    fun save(key : String, value : String, duration: Duration): Mono<Boolean> {
+        return redisTemplate.opsForValue().set(key,value, duration)
+    }
+
+    fun load(key:String): Mono<String> {
+        return redisTemplate.opsForValue().get(key)
+    }
+
+    fun <T> load(key : String, type : Class<T>): Mono<T> {
+        return redisTemplate.opsForValue()
+                            .get(key)
+                            .map { value-> mapper.readValue(value,type) }
+    }
+
+    fun removeRtmp(streamKey: String): Mono<String> {
+        return redisTemplate.opsForValue().getAndDelete(streamKey)
+    }
+
+}
+```
+
+
+---
+
 # Spring Security
 
 ## OAuth 2.0
