@@ -1,5 +1,6 @@
 # 동기 vs 비동기, Blocking vs Non-Blocking
 
+
 ## 동기와 비동기 <a href="#undefined" id="undefined"></a>
 
 ### Caller와 Calle <a href="#caller-calle" id="caller-calle"></a>
