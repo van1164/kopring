@@ -74,7 +74,7 @@
 
 #### nginx.conf 파일 구성 <a href="#nginxconf" id="nginxconf"></a>
 
-```
+```nginx
 user root;
 worker_processes auto;
 
@@ -114,7 +114,7 @@ rtmp {
 
 #### nginx-rtmp 모듈을 설치한 nginx dockerfile <a href="#nginx-rtmp-nginx-dockerfile" id="nginx-rtmp-nginx-dockerfile"></a>
 
-```
+```docker
 FROM alpine:3.13.4 as builder
 
 RUN apk add --update build-base git bash gcc make g++ zlib-dev linux-headers pcre-dev openssl-dev
@@ -203,7 +203,7 @@ hls폴더에 변화를 감지해서 변화가 생기면 파일들을 s3에 업�
 
 **docker compose**
 
-```
+```yaml
 version: '1'
 services:
   spring-app:
@@ -239,22 +239,22 @@ volumes:
 
 tmp 폴더를 공유 volume으로 지정해서 우리의 서버에서 rtmp로 들어온 파일들을 체크할 수있게 구성하였다. 그 후 10분간 유효한 stream key에 대해서 m3u8 인덱스 파일이 생기면 이벤트를 방생시키는 동작을 구현하였다.
 
-```
-    private fun checkStreamStart(m3u8Path: Path): Flux<Boolean> {
-        return Flux.interval(Duration.ofSeconds(1))
-            .take(600)
-            .map {
-                logger.info { m3u8Path }
-                if (m3u8Path.exists()) {
-                    sink.tryEmitNext(Event("finish", "finish"))
-                    return@map true
-                }
-                else{
-                    return@map false
-                }
+```kotlin
+private fun checkStreamStart(m3u8Path: Path): Flux<Boolean> {
+    return Flux.interval(Duration.ofSeconds(1))
+        .take(600)
+        .map {
+            logger.info { m3u8Path }
+            if (m3u8Path.exists()) {
+                sink.tryEmitNext(Event("finish", "finish"))
+                return@map true
             }
-            .takeUntil{it == true}
-    }
+            else{
+                return@map false
+            }
+        }
+        .takeUntil{it == true}
+}
 ```
 
 ### 결과 <a href="#undefined" id="undefined"></a>

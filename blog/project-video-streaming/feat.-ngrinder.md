@@ -65,7 +65,7 @@ $ docker run -v ~/ngrinder-agent:/opt/ngrinder-agent -d ngrinder/agent {controll
 
 ### Script작성 <a href="#script" id="script"></a>
 
-```
+```groovy
 //import 생략
 @RunWith(GrinderRunner)
 class TestRunner {
@@ -148,7 +148,7 @@ class TestRunner {
 
 **multipart로 요청을 하기 위해서 Content-Type을 헤더에 지정해줬다.**
 
-```
+```groovy
 NVPair[] headers = [new NVPair("Content-Type", "multipart/form-data; boundary=-----1234")]
 ```
 
@@ -162,7 +162,7 @@ NVPair[] headers = [new NVPair("Content-Type", "multipart/form-data; boundary=--
 
 ![](https://velog.velcdn.com/images/van1164/post/96a1ef0b-1de8-4582-a5ec-b6cb906963e4/image.png)
 
-```
+```groovy
 String fileName = "./resources/test.part" +i
 NVPair file = new NVPair("video",fileName)
 NVPair[] files = [file]
@@ -170,7 +170,7 @@ NVPair[] files = [file]
 
 **form형식으로 데이터 보내기**
 
-```
+```groovy
 NVPair[] params = [title,chunkNumber,totalChunk,fileUUID]
 NVPair[] files = new NVPair[0]
 def data = Codecs.mpFormDataEncode(params,files,headers)

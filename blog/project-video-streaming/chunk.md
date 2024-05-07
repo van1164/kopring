@@ -17,7 +17,7 @@ HTTP 상태코드에는 **206 Partial Content**라는 코드가 존재한다. �
 
 #### 요청 DTO <a href="#dto" id="dto"></a>
 
-```
+```kotlin
 data class UploadVideoPartDTO(
     val title : String,
     val chunkNumber : Int,
@@ -27,78 +27,78 @@ data class UploadVideoPartDTO(
 
 #### Controller 구현 <a href="#controller" id="controller"></a>
 
-```
-    @PostMapping("/video")
-    fun uploadVideo(@RequestPart(name = "video") video: MultipartFile,
-                    @RequestPart(name = "videoData")videoData: UploadVideoPartDTO): ResponseEntity<Any> {
+```kotlin
+@PostMapping("/video")
+fun uploadVideo(@RequestPart(name = "video") video: MultipartFile,
+                @RequestPart(name = "videoData")videoData: UploadVideoPartDTO): ResponseEntity<Any> {
 
-        return uploadService.uploadVideoPart(video, videoData)
+    return uploadService.uploadVideoPart(video, videoData)
 
 
-    }
+}
 ```
 
 #### Service구현 <a href="#service" id="service"></a>
 
-```
-    fun uploadVideoPart(video: MultipartFile, videoData: UploadVideoPartDTO): ResponseEntity<Any> {
+```kotlin
+fun uploadVideoPart(video: MultipartFile, videoData: UploadVideoPartDTO): ResponseEntity<Any> {
 
-        uploadRepository.uploadVideoPart(video, videoData.chunkNumber) //S3에 업로드
+    uploadRepository.uploadVideoPart(video, videoData.chunkNumber) //S3에 업로드
 
-        if (videoData.totalChunk - 1 == videoData.chunkNumber) {
-        	//여러 part를 하나의 파일로 만들기
-            val inputFilePath = Paths.get(UUID.randomUUID().toString() + ".mp4")
-            Files.createFile(inputFilePath)
-            
-            for (i: Int in 0 until videoData.totalChunk) {
-                val videoPart = uploadRepository.getPart(bucketUrl, video.originalFilename, i) ?: return ResponseEntity(
-                    HttpStatus.BAD_REQUEST
-                ) //S3에서 i번째 파트 가져오기
-                Files.write(inputFilePath, videoPart.readAllBytes(), StandardOpenOption.APPEND)
-                uploadRepository.deletePart(video.originalFilename, i)//i번째 파트 S3에서 제거
-            }
-            
-                        //mp4 to ts
-            mp4ToTs(inputFilePath, tsFilePath)
-
-            //ts 분할
-            divideTsFile(tsFilePath)
-
-            // 여러 TS들을 S3에 업로드
-            uploadRepository.uploadVideoTs(tsFilePath)
-            
-            return ResponseEntity(HttpStatus.OK)
-        } else {
-            return ResponseEntity(HttpStatus.PARTIAL_CONTENT)
+    if (videoData.totalChunk - 1 == videoData.chunkNumber) {
+    	//여러 part를 하나의 파일로 만들기
+        val inputFilePath = Paths.get(UUID.randomUUID().toString() + ".mp4")
+        Files.createFile(inputFilePath)
+        
+        for (i: Int in 0 until videoData.totalChunk) {
+            val videoPart = uploadRepository.getPart(bucketUrl, video.originalFilename, i) ?: return ResponseEntity(
+                HttpStatus.BAD_REQUEST
+            ) //S3에서 i번째 파트 가져오기
+            Files.write(inputFilePath, videoPart.readAllBytes(), StandardOpenOption.APPEND)
+            uploadRepository.deletePart(video.originalFilename, i)//i번째 파트 S3에서 제거
         }
+        
+                    //mp4 to ts
+        mp4ToTs(inputFilePath, tsFilePath)
+
+        //ts 분할
+        divideTsFile(tsFilePath)
+
+        // 여러 TS들을 S3에 업로드
+        uploadRepository.uploadVideoTs(tsFilePath)
+        
+        return ResponseEntity(HttpStatus.OK)
+    } else {
+        return ResponseEntity(HttpStatus.PARTIAL_CONTENT)
+    }
 ```
 
-```
-    private fun divideTsFile(tsFilePath: String) {
-        val segmentBuilder =
-            FFmpegBuilder().setInput(tsFilePath)
-                .addOutput("${tsFilePath}_%03d.ts")
-                .addExtraArgs("-c", "copy")
-                .addExtraArgs("-map", "0")
-                .addExtraArgs("-segment_time", "5")
-                .addExtraArgs("-f", "segment")
-                .addExtraArgs("-reset_timestamps", "1")
-                .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
-                .done()
-        FFmpegExecutor(ffmpeg, ffprobe).createJob(segmentBuilder).run()
-        File(tsFilePath).delete()
-    }
+```kotlin
+private fun divideTsFile(tsFilePath: String) {
+    val segmentBuilder =
+        FFmpegBuilder().setInput(tsFilePath)
+            .addOutput("${tsFilePath}_%03d.ts")
+            .addExtraArgs("-c", "copy")
+            .addExtraArgs("-map", "0")
+            .addExtraArgs("-segment_time", "5")
+            .addExtraArgs("-f", "segment")
+            .addExtraArgs("-reset_timestamps", "1")
+            .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
+            .done()
+    FFmpegExecutor(ffmpeg, ffprobe).createJob(segmentBuilder).run()
+    File(tsFilePath).delete()
+}
 
-    private fun mp4ToTs(inputFilePath: Path, tsFilePath: String) {
-        val builder = FFmpegBuilder()
-            .setInput(inputFilePath.toString())
-            .addOutput(tsFilePath).addExtraArgs("-c", "copy")
-            .addExtraArgs("-bsf:v", "h264_mp4toannexb")
-            .addExtraArgs("-f", "mpegts")
-            .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL).done()
-        FFmpegExecutor(ffmpeg, ffprobe).createJob(builder).run()
-        File(inputFilePath.toString()).delete()
-    }
+private fun mp4ToTs(inputFilePath: Path, tsFilePath: String) {
+    val builder = FFmpegBuilder()
+        .setInput(inputFilePath.toString())
+        .addOutput(tsFilePath).addExtraArgs("-c", "copy")
+        .addExtraArgs("-bsf:v", "h264_mp4toannexb")
+        .addExtraArgs("-f", "mpegts")
+        .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL).done()
+    FFmpegExecutor(ffmpeg, ffprobe).createJob(builder).run()
+    File(inputFilePath.toString()).delete()
+}
 ```
 
 ### 결과 <a href="#undefined" id="undefined"></a>

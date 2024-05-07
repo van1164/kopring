@@ -17,20 +17,20 @@ ffmpeg -i input.mp4 -ss 00:00:10 -vframes 1 thumbnail.jpg
 
 **2. kotlin 코드로 작성**
 
-```
-    private fun extractThumbnail(inputFilePath: String, thumbNailPath: String) {
-        FFmpegBuilder()
-            .setInput(inputFilePath)
-            .addOutput(thumbNailPath)
-            .addExtraArgs("-ss", "00:00:1")
-            .addExtraArgs("-vframes", "1")
-            .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
-            .done()
-            .apply {
-                FFmpegExecutor(ffmpeg, ffprobe).createJob(this).run()
-            }
+```kotlin
+private fun extractThumbnail(inputFilePath: String, thumbNailPath: String) {
+    FFmpegBuilder()
+        .setInput(inputFilePath)
+        .addOutput(thumbNailPath)
+        .addExtraArgs("-ss", "00:00:1")
+        .addExtraArgs("-vframes", "1")
+        .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
+        .done()
+        .apply {
+            FFmpegExecutor(ffmpeg, ffprobe).createJob(this).run()
+        }
 
-    }
+}
 ```
 
 #### 실행화면 <a href="#undefined" id="undefined"></a>

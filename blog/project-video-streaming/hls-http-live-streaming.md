@@ -21,23 +21,23 @@
 
 ### .m3u8파일 생성하도록 Repository 변경 <a href="#m3u8-repository" id="m3u8-repository"></a>
 
-```
-    private fun mp4ToM3U8(inputFilePath: Path, m3u8Path: String, tsFilePath : String) {
-        val builder = FFmpegBuilder()
-            .setInput(inputFilePath.toString())
-            .addOutput(m3u8Path)
-            .addExtraArgs("-c", "copy")
-            .addExtraArgs("-bsf:v", "h264_mp4toannexb")
-            .addExtraArgs("-hls_segment_filename","${tsFilePath}_%03d.ts")
-            .addExtraArgs("-start_number","0")
-            .addExtraArgs("-hls_time","5")
-            .addExtraArgs("-hls_list_size","0")
-            .addExtraArgs("-hls_base_url","https://video-stream-spring.s3.ap-northeast-2.amazonaws.com/")
-            .addExtraArgs("-f", "hls")
-            .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL).done()
-        FFmpegExecutor(ffmpeg, ffprobe).createJob(builder).run()
-        File(inputFilePath.toString()).delete()
-    }
+```kotlin
+private fun mp4ToM3U8(inputFilePath: Path, m3u8Path: String, tsFilePath : String) {
+    val builder = FFmpegBuilder()
+        .setInput(inputFilePath.toString())
+        .addOutput(m3u8Path)
+        .addExtraArgs("-c", "copy")
+        .addExtraArgs("-bsf:v", "h264_mp4toannexb")
+        .addExtraArgs("-hls_segment_filename","${tsFilePath}_%03d.ts")
+        .addExtraArgs("-start_number","0")
+        .addExtraArgs("-hls_time","5")
+        .addExtraArgs("-hls_list_size","0")
+        .addExtraArgs("-hls_base_url","https://video-stream-spring.s3.ap-northeast-2.amazonaws.com/")
+        .addExtraArgs("-f", "hls")
+        .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL).done()
+    FFmpegExecutor(ffmpeg, ffprobe).createJob(builder).run()
+    File(inputFilePath.toString()).delete()
+}
 ```
 
 > #### 🌭 여기서 HLS란 <a href="#hls" id="hls"></a>

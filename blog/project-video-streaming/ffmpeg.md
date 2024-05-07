@@ -37,7 +37,7 @@ ffmpeg -i output.ts -c copy -map 0 -segment_time 3 -f segment -reset_timestamps 
 
 #### FFmpeg Config 작성 <a href="#ffmpeg-config" id="ffmpeg-config"></a>
 
-```
+```kotlin
 @Configuration
 class FFmpegConfig(
     @Value("\${ffmpegPath}")
@@ -61,7 +61,7 @@ class FFmpegConfig(
 
 #### shell을 코드로 작성 <a href="#shell" id="shell"></a>
 
-```
+```kotlin
 //mp4 to ts
 val builder = FFmpegBuilder()
     .setInput(inputFilePath.toString())
@@ -72,19 +72,19 @@ val builder = FFmpegBuilder()
 	FFmpegExecutor(ffmpeg, ffprobe).createJob(builder).run()
 ```
 
-```
-	//ts 분할
-	val segmentBuilder =
-	FFmpegBuilder().setInput(tsFilePath)
-	.addOutput("${tsFilePath}_%03d.ts")
-	.addExtraArgs("-c", "copy")
-	.addExtraArgs("-map", "0")
-	.addExtraArgs("-segment_time", "5")
-	.addExtraArgs("-f", "segment")
-	.addExtraArgs("-reset_timestamps", "1")
-	.setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
-	.done()
-	FFmpegExecutor(ffmpeg, ffprobe).createJob(segmentBuilder).run()
+```kotlin
+//ts 분할
+val segmentBuilder =
+    FFmpegBuilder().setInput(tsFilePath)
+    .addOutput("${tsFilePath}_%03d.ts")
+    .addExtraArgs("-c", "copy")
+    .addExtraArgs("-map", "0")
+    .addExtraArgs("-segment_time", "5")
+    .addExtraArgs("-f", "segment")
+    .addExtraArgs("-reset_timestamps", "1")
+    .setStrict(FFmpegBuilder.Strict.EXPERIMENTAL)
+    .done()
+    FFmpegExecutor(ffmpeg, ffprobe).createJob(segmentBuilder).run()
 ```
 
 ![](https://velog.velcdn.com/images/van1164/post/5e1d9c24-68a0-40af-b423-da52335af9b8/image.png)

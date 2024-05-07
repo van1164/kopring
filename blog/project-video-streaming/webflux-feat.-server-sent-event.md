@@ -7,7 +7,7 @@
 
 ### 적용 코드 <a href="#undefined" id="undefined"></a>
 
-```
+```kotlin
 fun uploadVideoPartLast(fileUUID : String, totalChunk : Int): Flux<ServerSentEvent<String>> {
         //여러 part를 하나의 파일로 만들기
         val stopWatch = StopWatch()
@@ -112,7 +112,7 @@ fun uploadVideoPartLast(fileUUID : String, totalChunk : Int): Flux<ServerSentEve
 
 #### SSE에서의 Sink <a href="#sse-sink" id="sse-sink"></a>
 
-```
+```kotlin
 val sink = Sinks.many().multicast().onBackpressureBuffer<Event>()
 
 return sink.asFlux() // sink를 반환
@@ -124,77 +124,77 @@ sink.tryEmitNext(Event(이벤트명 ,메시지)) // 이벤트 방출
 
 #### SSE 적용 <a href="#sse" id="sse"></a>
 
-```
-    val sink = Sinks.many().multicast().onBackpressureBuffer<Event>()
-    fun uploadVideoPartLast(fileUUID : String, totalChunk : Int): Flux<ServerSentEvent<String>> {
-        //여러 part를 하나의 파일로 만들기
-        val stopWatch = StopWatch()
-        stopWatch.start("mp4로 만드는데 걸린 시간")
-        val inputFilePath = Paths.get(UUID.randomUUID().toString() + ".mp4")
-        runBlocking {
-            Files.createFile(inputFilePath)
+```kotlin
+val sink = Sinks.many().multicast().onBackpressureBuffer<Event>()
+fun uploadVideoPartLast(fileUUID : String, totalChunk : Int): Flux<ServerSentEvent<String>> {
+    //여러 part를 하나의 파일로 만들기
+    val stopWatch = StopWatch()
+    stopWatch.start("mp4로 만드는데 걸린 시간")
+    val inputFilePath = Paths.get(UUID.randomUUID().toString() + ".mp4")
+    runBlocking {
+        Files.createFile(inputFilePath)
+    }
+
+    val videoFlux = Flux.range(0,totalChunk)
+        .publishOn(Schedulers.boundedElastic())
+        .flatMapSequential {
+            val flux = uploadRepository.getPartByteArray(
+                bucketUrl,
+                fileUUID,
+                it
+            )
+            if(flux !=null){
+                Flux.just(flux)
+            }
+            else{
+                Flux.empty()
+            }
+        }
+        .doFirst {
+            sink.tryEmitNext(Event("ing" ,"파일 업로드 완료하는 중.."))
+        }
+        .doOnNext{videoPart->
+            logger.info{"파일write"}
+            Mono.fromCallable {
+                Files.write(inputFilePath, videoPart, StandardOpenOption.APPEND)
+            }.subscribeOn(Schedulers.boundedElastic()).subscribe()
         }
 
-        val videoFlux = Flux.range(0,totalChunk)
-            .publishOn(Schedulers.boundedElastic())
-            .flatMapSequential {
-                val flux = uploadRepository.getPartByteArray(
-                    bucketUrl,
-                    fileUUID,
-                    it
-                )
-                if(flux !=null){
-                    Flux.just(flux)
-                }
-                else{
-                    Flux.empty()
-                }
-            }
-            .doFirst {
-                sink.tryEmitNext(Event("ing" ,"파일 업로드 완료하는 중.."))
-            }
-            .doOnNext{videoPart->
-                logger.info{"파일write"}
-                Mono.fromCallable {
-                    Files.write(inputFilePath, videoPart, StandardOpenOption.APPEND)
-                }.subscribeOn(Schedulers.boundedElastic()).subscribe()
-            }
 
+    stopWatch.stop()
+    val m3u8Path = "$fileUUID.m3u8"
+    val thumbNailPath = UUID.randomUUID().toString() + ".jpg"
 
-        stopWatch.stop()
-        val m3u8Path = "$fileUUID.m3u8"
-        val thumbNailPath = UUID.randomUUID().toString() + ".jpg"
-
-        val deleteChunkFileFlux =
-            Flux.range(0,totalChunk).flatMap{
-                Flux.just(
-                    uploadRepository.deletePart(fileUUID, it)
-                )
-            }.doOnComplete {
-                sink.tryEmitNext(Event("ing","썸네일 생성중.."))
-            }
-                .subscribeOn(Schedulers.boundedElastic())
-
-        val thumbNailFlux = Mono.zip(Mono.just(inputFilePath),Mono.just(thumbNailPath))
-            .flatMap{
-                Mono.just(createThumbNail(it.t1,it.t2)).subscribeOn(Schedulers.parallel())
-            }
-        val saveVideoFlux = Mono.zip(Mono.just(fileUUID),Mono.just(thumbNailPath))
-            .flatMap { Mono.just(saveThumbnailData(it.t1,it.t2)).subscribeOn(Schedulers.parallel()) }
-
-        val mp4ToHlsFlux = Mono.zip(Mono.just(inputFilePath),Mono.just(m3u8Path),Mono.just(fileUUID))
-            .flatMap{ Mono.just(mp4ToHls(it.t1,it.t2,it.t3)).subscribeOn(Schedulers.parallel())}.doFirst { sink.tryEmitNext(Event("ing","파일 변환 처리중...")) }
-
-        Flux.concat(videoFlux,Flux.merge(deleteChunkFileFlux,thumbNailFlux,saveVideoFlux,mp4ToHlsFlux))
-            .doOnComplete {
-                sink.tryEmitNext(Event("finish",fileUUID))
-            }
-            .subscribe()
-        return sink.asFlux().map{event->
-            ServerSentEvent.builder<String>(event.message)
-                .event(event.event)
-                .build()
+    val deleteChunkFileFlux =
+        Flux.range(0,totalChunk).flatMap{
+            Flux.just(
+                uploadRepository.deletePart(fileUUID, it)
+            )
+        }.doOnComplete {
+            sink.tryEmitNext(Event("ing","썸네일 생성중.."))
         }
+            .subscribeOn(Schedulers.boundedElastic())
+
+    val thumbNailFlux = Mono.zip(Mono.just(inputFilePath),Mono.just(thumbNailPath))
+        .flatMap{
+            Mono.just(createThumbNail(it.t1,it.t2)).subscribeOn(Schedulers.parallel())
+        }
+    val saveVideoFlux = Mono.zip(Mono.just(fileUUID),Mono.just(thumbNailPath))
+        .flatMap { Mono.just(saveThumbnailData(it.t1,it.t2)).subscribeOn(Schedulers.parallel()) }
+
+    val mp4ToHlsFlux = Mono.zip(Mono.just(inputFilePath),Mono.just(m3u8Path),Mono.just(fileUUID))
+        .flatMap{ Mono.just(mp4ToHls(it.t1,it.t2,it.t3)).subscribeOn(Schedulers.parallel())}.doFirst { sink.tryEmitNext(Event("ing","파일 변환 처리중...")) }
+
+    Flux.concat(videoFlux,Flux.merge(deleteChunkFileFlux,thumbNailFlux,saveVideoFlux,mp4ToHlsFlux))
+        .doOnComplete {
+            sink.tryEmitNext(Event("finish",fileUUID))
+        }
+        .subscribe()
+    return sink.asFlux().map{event->
+        ServerSentEvent.builder<String>(event.message)
+            .event(event.event)
+            .build()
+    }
 ```
 
 ### 결과 <a href="#undefined" id="undefined"></a>

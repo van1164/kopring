@@ -81,100 +81,100 @@
 
 **코드**
 
-```
-    fun uploadVideoPartLast(video: MultipartFile, videoData: UploadVideoPartDTO): String {
+```kotlin
+fun uploadVideoPartLast(video: MultipartFile, videoData: UploadVideoPartDTO): String {
 
-        val futureList = mutableListOf<CompletableFuture<ByteArray>>()
-        //여러 part를 하나의 파일로 만들기
-        val stopWatch = StopWatch()
-        stopWatch.start("mp4로 만드는데 걸린 시간")
-        //val mp4start = System.currentTimeMillis()
-        val inputFilePath = Paths.get(UUID.randomUUID().toString() + ".mp4")
-        runBlocking {
-            Files.createFile(inputFilePath)
-        }
-
-
-        for (i: Int in 0 until videoData.totalChunk) {
-            futureList.add(CompletableFuture.supplyAsync {
-                return@supplyAsync uploadRepository.getPartByteArray(
-                    bucketUrl,
-                    video.originalFilename,
-                    i
-                )
-            })
-            //val videoPart = uploadRepository.getPart(bucketUrl, video.originalFilename, i)
-        }
-
-
-        return CompletableFuture.allOf(*futureList.toTypedArray())
-            .thenApply {
-                // ts -> mp4
-                futureList.forEach{videoPart ->
-                    Files.write(inputFilePath, videoPart.get(), StandardOpenOption.APPEND)
-                }
-                stopWatch.stop()
-            }.thenApplyAsync {
-                val outputUUID = UUID.randomUUID().toString()
-                val m3u8Path = "$outputUUID.m3u8"
-                val thumbNailPath = UUID.randomUUID().toString() + ".jpg"
-                val deleteChunkFuture = CompletableFuture.runAsync{deleteChunkFiles(videoData, video)}
-                val thumbNailFuture = CompletableFuture.runAsync{createThumbNail(inputFilePath, thumbNailPath)}
-                val saveDataFuture = CompletableFuture.runAsync{saveVideoData(outputUUID, videoData, thumbNailPath)}
-                val mp4ToHlsFuture = CompletableFuture.runAsync{mp4ToHls(inputFilePath, m3u8Path, outputUUID)}
-                CompletableFuture.allOf(deleteChunkFuture,thumbNailFuture,saveDataFuture,mp4ToHlsFuture).get()
-                return@thenApplyAsync outputUUID
-            }.get()
+    val futureList = mutableListOf<CompletableFuture<ByteArray>>()
+    //여러 part를 하나의 파일로 만들기
+    val stopWatch = StopWatch()
+    stopWatch.start("mp4로 만드는데 걸린 시간")
+    //val mp4start = System.currentTimeMillis()
+    val inputFilePath = Paths.get(UUID.randomUUID().toString() + ".mp4")
+    runBlocking {
+        Files.createFile(inputFilePath)
     }
 
-    private fun mp4ToHls(
-        inputFilePath: Path,
-        m3u8Path: String,
-        outputUUID: String
-    ) {
-        logger.info("hls시작")
-       val stopWatch = StopWatch()
-        stopWatch.start("mp4를 hls로 바꾸고 업로드하는 데 걸린 시간")
-        //mp4 to ts
 
-
-        mp4ToM3U8(inputFilePath, m3u8Path, outputUUID)
-
-
-        // 여러 TS들을 S3에 업로드
-        uploadVideoTs(outputUUID)
-
-        uploadRepository.uploadM3U8(m3u8Path)
-        stopWatch.stop()
-        println(stopWatch.prettyPrint())
+    for (i: Int in 0 until videoData.totalChunk) {
+        futureList.add(CompletableFuture.supplyAsync {
+            return@supplyAsync uploadRepository.getPartByteArray(
+                bucketUrl,
+                video.originalFilename,
+                i
+            )
+        })
+        //val videoPart = uploadRepository.getPart(bucketUrl, video.originalFilename, i)
     }
 
-    private fun createThumbNail(
-        inputFilePath: Path,
-        thumbNailPath: String
-    ) {
-        logger.info("썸네일")
-        val stopWatch = StopWatch()
-        stopWatch.start("썸네일 만들고 업로드하는 데 걸린 시간")
-        //thumbnail by ffmpeg
 
-        extractThumbnail(inputFilePath.toString(), thumbNailPath)
-        //uploadThumbnail
-        uploadRepository.uploadThumbnail(thumbNailPath)
-        stopWatch.stop()
-        println(stopWatch.prettyPrint())
-    }
+    return CompletableFuture.allOf(*futureList.toTypedArray())
+        .thenApply {
+            // ts -> mp4
+            futureList.forEach{videoPart ->
+                Files.write(inputFilePath, videoPart.get(), StandardOpenOption.APPEND)
+            }
+            stopWatch.stop()
+        }.thenApplyAsync {
+            val outputUUID = UUID.randomUUID().toString()
+            val m3u8Path = "$outputUUID.m3u8"
+            val thumbNailPath = UUID.randomUUID().toString() + ".jpg"
+            val deleteChunkFuture = CompletableFuture.runAsync{deleteChunkFiles(videoData, video)}
+            val thumbNailFuture = CompletableFuture.runAsync{createThumbNail(inputFilePath, thumbNailPath)}
+            val saveDataFuture = CompletableFuture.runAsync{saveVideoData(outputUUID, videoData, thumbNailPath)}
+            val mp4ToHlsFuture = CompletableFuture.runAsync{mp4ToHls(inputFilePath, m3u8Path, outputUUID)}
+            CompletableFuture.allOf(deleteChunkFuture,thumbNailFuture,saveDataFuture,mp4ToHlsFuture).get()
+            return@thenApplyAsync outputUUID
+        }.get()
+}
 
-    private fun deleteChunkFiles(
-        videoData: UploadVideoPartDTO,
-        video: MultipartFile
-    ) {
-        logger.info("DELETE")
-        val futures = (0 until videoData.totalChunk).map {
-            CompletableFuture.runAsync { uploadRepository.deletePart(video.originalFilename, it) }
-        }
-        CompletableFuture.allOf(*futures.toTypedArray()).get()
+private fun mp4ToHls(
+    inputFilePath: Path,
+    m3u8Path: String,
+    outputUUID: String
+) {
+    logger.info("hls시작")
+   val stopWatch = StopWatch()
+    stopWatch.start("mp4를 hls로 바꾸고 업로드하는 데 걸린 시간")
+    //mp4 to ts
+
+
+    mp4ToM3U8(inputFilePath, m3u8Path, outputUUID)
+
+
+    // 여러 TS들을 S3에 업로드
+    uploadVideoTs(outputUUID)
+
+    uploadRepository.uploadM3U8(m3u8Path)
+    stopWatch.stop()
+    println(stopWatch.prettyPrint())
+}
+
+private fun createThumbNail(
+    inputFilePath: Path,
+    thumbNailPath: String
+) {
+    logger.info("썸네일")
+    val stopWatch = StopWatch()
+    stopWatch.start("썸네일 만들고 업로드하는 데 걸린 시간")
+    //thumbnail by ffmpeg
+
+    extractThumbnail(inputFilePath.toString(), thumbNailPath)
+    //uploadThumbnail
+    uploadRepository.uploadThumbnail(thumbNailPath)
+    stopWatch.stop()
+    println(stopWatch.prettyPrint())
+}
+
+private fun deleteChunkFiles(
+    videoData: UploadVideoPartDTO,
+    video: MultipartFile
+) {
+    logger.info("DELETE")
+    val futures = (0 until videoData.totalChunk).map {
+        CompletableFuture.runAsync { uploadRepository.deletePart(video.originalFilename, it) }
     }
+    CompletableFuture.allOf(*futures.toTypedArray()).get()
+}
 ```
 
 #### ✅ 같은 용량의 파일을 업로드하는 데 13초정도의 시간 절약을 할 수있었다!! <a href="#id-13" id="id-13"></a>
@@ -214,7 +214,7 @@ amazonS3 `S3Object`를 close해주지 않았기 때문에 다음과 같은 오�
 
 코틀린에서는 use 고차함수를 통해 사용할 수 있다.
 
-```
+```kotlin
 fun readFirstLine(path: String): String {
     BufferedReader(FileReader(path)).use { br ->
         return br.readLine()
