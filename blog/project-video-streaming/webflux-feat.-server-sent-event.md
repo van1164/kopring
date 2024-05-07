@@ -3,7 +3,7 @@
 ### Webflux 적용 <a href="#webflux" id="webflux"></a>
 
 > 기존에 CompletableFuture로 구현된 파일 업로드를 WebFLux를 적용해 보았다.\
-> 기존코드 포스팅 : [https://velog.io/@van1164/KoPring-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0-5-%EC%97%85%EB%A1%9C%EB%93%9C-%EC%8B%9C%EA%B0%84-%EC%9D%B4%EA%B2%8C-%EC%B5%9C%EC%84%A0%EC%9D%BC%EA%B9%8C-feat.%EB%B9%84%EB%8F%99%EA%B8%B0-Non-Blocking](https://velog.io/@van1164/KoPring-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0-5-%EC%97%85%EB%A1%9C%EB%93%9C-%EC%8B%9C%EA%B0%84-%EC%9D%B4%EA%B2%8C-%EC%B5%9C%EC%84%A0%EC%9D%BC%EA%B9%8C-feat.%EB%B9%84%EB%8F%99%EA%B8%B0-Non-Blocking)
+> 기존코드 포스팅 : [feat.-non-blocking.md](feat.-non-blocking.md "mention")
 
 ### 적용 코드 <a href="#undefined" id="undefined"></a>
 
