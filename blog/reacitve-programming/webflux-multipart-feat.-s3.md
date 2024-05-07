@@ -4,12 +4,12 @@
 
 ### 기존 MultiPart 방식 <a href="#multipart" id="multipart"></a>
 
-```
-    @PostMapping("")
-    @ResponseBody
-    fun testOne(@RequestPart(name = "video") video: MultipartFile, title : String): String {
-        return "test"
-    }
+```kotlin
+@PostMapping("")
+@ResponseBody
+fun testOne(@RequestPart(name = "video") video: MultipartFile, title : String): String {
+    return "test"
+}
 ```
 
 Servlet방식의 `Spring`을 사용할 때는 전혀 이상없이 동작했던 코드입니다. 아마 대부분의 `Spring`개발자분들이 이런 방식을 통해서 이미지나 동영상을 업로드받을 것이다.
@@ -33,21 +33,21 @@ spring.main.web-application-type=reactive
 
 ### FilePart사용법 <a href="#filepart" id="filepart"></a>
 
-```
-    @PostMapping("")
-    @ResponseBody
-    fun test(@RequestPart(name = "video") video: FilePart,
-             @RequestPart title : String,
-        ): Mono<String> {
-        return Mono.just("test")
-       }
+```kotlin
+@PostMapping("")
+@ResponseBody
+fun test(@RequestPart(name = "video") video: FilePart,
+         @RequestPart title : String,
+    ): Mono<String> {
+    return Mono.just("test")
+   }
 ```
 
 이렇게 `MultiPartFile`을 `FilePart`로만 바꾸어주면 됩니다. 이렇게 받아온 `FilePart`를 어떻게 활용하면 될까요?
 
 ### FilePart를 File로 바꾸기 <a href="#filepart-file" id="filepart-file"></a>
 
-```
+```kotlin
 val path = Paths.get("지정할 URI/test.mp4") //지정한 URI에 test.mp4로 저장됩니다.
 video.transferTo(path).subscribe()
 ```
@@ -58,19 +58,19 @@ video.transferTo(path).subscribe()
 
 #### 🤬 틀린방법 <a href="#undefined" id="undefined"></a>
 
-```
-        video.content()
-            .map(DataBuffer::asInputStream)
-            .doOnNext { inputStream->
-                inputStream
-            }
+```kotlin
+video.content()
+    .map(DataBuffer::asInputStream)
+    .doOnNext { inputStream->
+        inputStream
+    }
 ```
 
 직관적으로 봤을 때는 전혀 이상하다고 생각하지 않았는데 이렇게 동작시켜보니 1kb짜리 inputStream으로 쪼개져서 나왔다. 아무래도 거의 모든 경우 업로드한 파일은 그 자체로 의미가 있기 때문에 파일 자체의 inputStream이 필요했다.
 
 #### 😋 파일 자체를 InputStream으로 바꾸는 법 <a href="#inputstream" id="inputstream"></a>
 
-```
+```kotlin
 DataBufferUtils.join(video.content())
 			.map(DataBuffer::asInputStream)
 // DataBufferUtils를 사용해서 Flux<DataBuffer> 를 하나의 DataBuffer로 합쳐준다.
@@ -78,7 +78,7 @@ DataBufferUtils.join(video.content())
 
 #### S3에 업로드하는 방법 <a href="#s3" id="s3"></a>
 
-```
+```kotlin
 DataBufferUtils.join(video.content())
             .map(DataBuffer::asInputStream)
             .doOnNext { inputStream ->
