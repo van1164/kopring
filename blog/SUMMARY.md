@@ -3,7 +3,7 @@
 ## ♻️ 리액티브 프로그래밍 <a href="#reacitve-programming" id="reacitve-programming"></a>
 
 * [리액티브 프로그래밍](README.md)
-* [동기 vs 비동기, Blocking vs Non-Blocking](reacitve-programming/동기 vs 비동기, Blocking vs Non-Blocking.md)
+* [동기 vs 비동기, Blocking vs Non-Blocking](reacitve-programming/vs-blocking-vs-non-blocking.md)
 * [Executor Service와 Future, 그리고 CompletableFuture](reacitve-programming/executor-service-future-completablefuture.md)
 * [Cold Sequence와 Hot Sequence](reacitve-programming/cold-sequence-hot-sequence.md)
 * [Reactive Manifesto](reacitve-programming/reactive-manifesto.md)
