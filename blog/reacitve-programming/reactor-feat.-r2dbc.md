@@ -43,7 +43,7 @@
 MySQL 연결 설정을 포함하는 객체\
 host, port, database, username, password등의 기본 설정을 제공
 
-```
+```java
 var connectionFactory = MySqlConnectionFactory.from(config);
 ```
 
@@ -54,7 +54,7 @@ var connectionFactory = MySqlConnectionFactory.from(config);
 spring data r2dbc의 추상화 클래스\
 결과를 entity객체로 받을 수 있음.
 
-```
+```java
 var template = new R2dbcEntityTemplate(connectionFactory)
 ```
 
@@ -71,7 +71,7 @@ Delete : ReactiveDeleteOperation
 
 **Select 예제**
 
-```
+```kotlin
 val r2dbcTemplate = R2dbcEntityTemplate(connectionFactory)
 
 var query = Query.query(
@@ -90,7 +90,7 @@ r2dbcTemplate.select(User::class.java)
 
 **Update 예제**
 
-```
+```kotlin
 val r2dbcTemplate = R2dbcEntityTemplate(connectionFactory)
 
 var query = Query.query(
@@ -111,10 +111,10 @@ r2dbcTemplate.update(User::class.java)
 
 **더 쉽게 사용하도록 구현된 방식**
 
-```
-	r2dbcTemplate.select(query,User::class.java) //selcet
-    r2dbcTemplate.insert(user) // insert
-    r2dbcTemplate.update(user) //update
+```kotlin
+r2dbcTemplate.select(query,User::class.java) //selcet
+r2dbcTemplate.insert(user) // insert
+r2dbcTemplate.update(user) //update
 ```
 
 ### R2DBC Repository <a href="#r2dbc-repository" id="r2dbc-repository"></a>
@@ -134,7 +134,7 @@ R2DBC Repository의 기능들이 구현되어있는 구현체이다.
 
 **업데이트 예제**
 
-```
+```kotlin
 @Modifying
 @Query("update user set name = :name where id = :id")
 fun updateNameById(String name, Long id) : Mono<Integer>
