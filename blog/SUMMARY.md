@@ -24,3 +24,13 @@
 * [JPA에서 R2DBC로 마이그레이션](project-video-streaming/jpa-r2dbc.md)
 * [멀티모듈 적용기](project-video-streaming/undefined-1.md)
 * [배포하면서 발생한 문제들](project-video-streaming/undefined-2.md)
+
+## Spring
+
+* [@Validated와 @Valid를 통한 유효성검사](spring/validated-valid.md)
+
+***
+
+* [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](transactional-readonly-true.md)
+* [@NotNull, @NotEmpty, @NotBlank 의 차이점](notnull-notempty-notblank.md)
+* [bindingResult로 예외 확인](bindingresult.md)
