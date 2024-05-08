@@ -8,7 +8,7 @@
 
 ![](https://velog.velcdn.com/images/van1164/post/542d0753-90a3-4724-84a3-b120242ae69c/image.png)
 
-```
+```kotlin
 Flux.just(1,2,3,4)
 	.subscribeOn(
     	Schedulers.immediate()
@@ -27,7 +27,7 @@ Flux.just(1,2,3,4)
 
 ### Single Scheduler <a href="#single-scheduler" id="single-scheduler"></a>
 
-```
+```kotlin
 	Flux.just(1,2,3,4)
 		.subscribeOn(
 			Schedulers.single()
@@ -45,7 +45,7 @@ Flux.just(1,2,3,4)
 
 ### Parallel Scheduler <a href="#parallel-scheduler" id="parallel-scheduler"></a>
 
-```
+```kotlin
 	for(i : Int in 0..100){
 		val idx = i
 		Flux.create{sink ->
@@ -69,7 +69,7 @@ Flux.just(1,2,3,4)
 
 ### BoundedElastic Scheduler <a href="#boundedelastic-scheduler" id="boundedelastic-scheduler"></a>
 
-```
+```kotlin
 	for(i : Int in 0..30){
 		val idx = i
 		Flux.create{sink ->
@@ -102,7 +102,7 @@ Flux.just(1,2,3,4)
 
 #### 예시코드 <a href="#undefined" id="undefined"></a>
 
-```
+```kotlin
 	for(i : Int in 0..10){
 		val idx = i
 		Flux.create{sink ->
