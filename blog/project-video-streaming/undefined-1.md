@@ -52,7 +52,7 @@
 
 **오류가 난 코드**
 
-```
+```kts
 subprojects {
 
 	dependencies {
@@ -72,7 +72,7 @@ subprojects {
 외부 모듈에 등록된 bean은 자체적으로 Scan을 하지 않는다.\
 @ComponentScan을 통해 참조한 모듈들을 Scan하도록 구현하였다.
 
-```
+```kotlin
 @ComponentScan(basePackages = ["com.van1164.common","com.van1164.util","com.van1164.security"])
 @EnableR2dbcRepositories(basePackageClasses = [VideoR2DBCRepository::class])
 ```
