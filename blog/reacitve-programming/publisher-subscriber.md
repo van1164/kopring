@@ -43,7 +43,7 @@
 > 실제로 Flux와 Mono를 구독을 해야 데이터를 읽어올 수 있다.\
 > Flux와 Mono를 구독하는 subscribe 메서드는 여러가지가 있는데 하나하나 살펴보자.
 
-```
+```kotlin
 subscribe(); //시퀀스를 구독하고 트리거한다.
 
 subscribe(Consumer<? super T> consumer); //방출된 값 각각으로 어떤 행동을 한다.
@@ -69,7 +69,7 @@ subscribe(Consumer<? super T> consumer,
 
 **자바**
 
-```
+```java
 Flux.fromIterable(List.of(1,2,3,4))
 	.subscribe(new Consumer<Integer>(){
     	@Override
@@ -82,7 +82,7 @@ Flux.fromIterable(List.of(1,2,3,4))
 
 **코틀린**
 
-```
+```kotlin
 Flux.range(1, 10)
     .subscribe(
         object : Consumer<Int> {
@@ -110,7 +110,7 @@ Flux.range(1, 10)
 
 **자바**
 
-```
+```java
 Flux.fromIterable(List.of(1,2,3,4))
 	.subscribe(value -> {},
     			error->{},
@@ -121,7 +121,7 @@ Flux.fromIterable(List.of(1,2,3,4))
 
 **코틀린**
 
-```
+```kts
 Flux.range(1, 10)
     .subscribe(
         { int -> println(int) },
@@ -137,7 +137,7 @@ Flux.range(1, 10)
 
 **자바**
 
-```
+```java
 var subScriber = new BaseSubscriber<Integer>() {
 
       @Override
@@ -159,7 +159,7 @@ Flux.range(1, 10)
 
 **코틀린**
 
-```
+```kotlin
 val subscriber = object : BaseSubscriber<Int>() {
     override fun hookOnComplete() {
         logger.info("complete")
