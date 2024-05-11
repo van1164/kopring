@@ -1,8 +1,10 @@
 # Table of contents
 
+* [Intro](README.md)
+
 ## ♻️ 리액티브 프로그래밍 <a href="#reacitve-programming" id="reacitve-programming"></a>
 
-* [동기 vs 비동기, Blocking vs Non-Blocking](README.md)
+* [동기 vs 비동기, Blocking vs Non-Blocking](<README (1).md>)
 * [Executor Service와 Future, 그리고 CompletableFuture](reacitve-programming/executor-service-future-completablefuture.md)
 * [Cold Sequence와 Hot Sequence](reacitve-programming/cold-sequence-hot-sequence.md)
 * [Reactive Manifesto](reacitve-programming/reactive-manifesto.md)
@@ -34,3 +36,4 @@
 * [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](transactional-readonly-true.md)
 * [@NotNull, @NotEmpty, @NotBlank 의 차이점](notnull-notempty-notblank.md)
 * [bindingResult로 예외 확인](bindingresult.md)
+* [N+1문제에 대한 생각 (feat. 이제 발생하지 않게 업데이트 되었나?)](n+1-feat..md)
