@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Intro](README.md)
+* [van1164 학습 블로그](README.md)
 
 ## ♻️ 리액티브 프로그래밍 <a href="#reacitve-programming" id="reacitve-programming"></a>
 
