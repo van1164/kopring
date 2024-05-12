@@ -36,4 +36,4 @@
 * [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](transactional-readonly-true.md)
 * [@NotNull, @NotEmpty, @NotBlank 의 차이점](notnull-notempty-notblank.md)
 * [bindingResult로 예외 확인](bindingresult.md)
-* [N+1문제에 대한 생각 (feat. 이제 발생하지 않게 업데이트 되었나?)](n+1-feat..md)
+* [N+1문제에 대한 생각](n+1.md)
