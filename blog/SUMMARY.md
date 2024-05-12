@@ -30,10 +30,10 @@
 ## Spring
 
 * [@Validated와 @Valid를 통한 유효성검사](spring/validated-valid.md)
+* [bindingResult로 예외 확인](spring/bindingresult.md)
+* [@NotNull, @NotEmpty, @NotBlank 의 차이점](spring/notnull-notempty-notblank.md)
 
-***
+## Spring-Jpa
 
-* [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](transactional-readonly-true.md)
-* [@NotNull, @NotEmpty, @NotBlank 의 차이점](notnull-notempty-notblank.md)
-* [bindingResult로 예외 확인](bindingresult.md)
-* [N+1문제에 대한 생각](n+1.md)
+* [N+1문제에 대한 생각](spring-jpa/n+1.md)
+* [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](spring-jpa/transactional-readonly-true.md)
