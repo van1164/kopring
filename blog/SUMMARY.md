@@ -36,4 +36,5 @@
 ## Spring-Jpa
 
 * [N+1문제에 대한 생각](spring-jpa/n+1.md)
+* [@Transactional의 내부 동작 과정](spring-jpa/transactional.md)
 * [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](spring-jpa/transactional-readonly-true.md)
