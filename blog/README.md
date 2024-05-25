@@ -1,6 +1,12 @@
 # van1164 학습 블로그
 
-열심히 백엔드 공부를 하고있는 학생입니다.
+### 공부할 예정인 개념
+
+* [ ] Inner, Outer Join
+* [ ] Bean 스코프
+* [ ] IOC, DI, AOP
+* [ ] 트랜잭션 전파
+* [ ] Spring InterCept
 
 
 
