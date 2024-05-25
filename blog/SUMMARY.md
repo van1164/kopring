@@ -30,6 +30,7 @@
 
 ## Spring
 
+* [빈 스코프에 대해서](spring/undefined.md)
 * [@Validated와 @Valid를 통한 유효성검사](spring/validated-valid.md)
 * [bindingResult로 예외 확인](spring/bindingresult.md)
 * [@NotNull, @NotEmpty, @NotBlank 의 차이점](spring/notnull-notempty-notblank.md)
