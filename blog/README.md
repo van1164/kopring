@@ -7,6 +7,8 @@
 * [ ] IOC, DI, AOP
 * [ ] 트랜잭션 전파
 * [ ] Spring InterCept
+* [ ] fk없이 데이터 관리
+* [ ] 커버링 인덱스
 
 
 
