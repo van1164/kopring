@@ -2,8 +2,8 @@
 
 ### 공부할 예정인 개념
 
-* [ ] Inner, Outer Join
-* [ ] Bean 스코프
+* [x] Inner, Outer Join
+* [x] Bean 스코프
 * [ ] IOC, DI, AOP
 * [ ] 트랜잭션 전파
 * [ ] Spring InterCept
