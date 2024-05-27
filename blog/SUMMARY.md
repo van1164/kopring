@@ -42,6 +42,7 @@
 * [@Transactional에서 readOnly = true를 하면 무슨 일이 벌어질까](spring-jpa/transactional-readonly-true.md)
 * [데이터베이스 격리수준과 동시성(feat. Locking과 MVCC 각각 관점에서)](spring-jpa/feat.-locking-mvcc.md)
 * [Spring 코드에서의 트랜잭션과 DB에서의 트랜잭션](spring-jpa/spring-db.md)
+* [JPA 페이지네이션 최적화 (Offset, Cusor, 커버링 인덱스)](spring-jpa/jpa-offset-cusor.md)
 
 ## SPRING-SECURITY-REACTIVE
 
