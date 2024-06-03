@@ -27,6 +27,8 @@
 * [멀티모듈 적용기](project-video-streaming/undefined-1.md)
 * [배포하면서 발생한 문제들](project-video-streaming/undefined-2.md)
 * [댓글기능 구현](project-video-streaming/undefined-3.md)
+* [댓글 좋아요 구현 (feat. 동시성 문제)](project-video-streaming/feat..md)
+* [좋아요, 조회수 기능 최적화 (feat. Redis + AWS Lambda)](project-video-streaming/feat.-redis-+-aws-lambda.md)
 
 ## Spring
 
@@ -48,3 +50,7 @@
 
 * [Webflux환경에서 JWT 사용하기](spring-security-reactive/webflux-jwt.md)
 * [@AuthenticationPrincipal에 null값 들어오는 문제](spring-security-reactive/authenticationprincipal-null.md)
+
+## redis
+
+* [좋아요 기능 최적화 (feat. redis)](redis/feat.-redis.md)
