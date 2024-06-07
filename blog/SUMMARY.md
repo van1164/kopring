@@ -6,6 +6,7 @@
 
 * [Webflux 환경에서 MultiPart로 파일 업로드 (feat. S3 업로드하는 법까지)](spring-webflux/webflux-multipart-feat.-s3.md)
 * [R2DBC 정리](spring-webflux/reactor-feat.-r2dbc.md)
+* [Webflux에서 @Transactional이 Rollback을 안해요...](spring-webflux/webflux-transactional-rollback-....md)
 
 ## ♻️ 리액티브 프로그래밍 <a href="#reacitve-programming" id="reacitve-programming"></a>
 
