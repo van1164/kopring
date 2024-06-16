@@ -1,5 +1,15 @@
 # van1164 학습 블로그
 
+
+
+## Velog
+
+{% embed url="https://velog.io/@van1164/posts" %}
+
+## Github
+
+{% embed url="https://github.com/van1164" %}
+
 ### 공부할 예정인 개념
 
 * [x] Inner, Outer Join
@@ -11,9 +21,3 @@
 * [x] 커버링 인덱스
 * [ ] batch insert
 * [ ] saga패턴
-
-
-
-#### Github
-
-{% embed url="https://github.com/van1164" %}
