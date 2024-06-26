@@ -59,7 +59,16 @@
 ## redis
 
 * [좋아요 기능 최적화 (feat. redis)](redis/feat.-redis.md)
+* [Redis Lua Script를 활용해서 주문 기능 원자성 보장](redis/redis-lua-script.md)
 
 ## 📗 토비의 스프링 <a href="#tobi-spring" id="tobi-spring"></a>
 
 * [토비의 스프링 1장](tobi-spring/1.md)
+* [토비의 스프링 2장](tobi-spring/2.md)
+* [토비의 스프링 3장](tobi-spring/3.md)
+* [토비의 스프링 4장](tobi-spring/4.md)
+
+## TDD
+
+* [Fixture Monkey 적용기](tdd/fixture-monkey.md)
+* [JUnit으로 동시성문제를 테스트할 수 있게 해보자! (라이브러리 개발기)](tdd/junit.md)
