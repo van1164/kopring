@@ -48,19 +48,35 @@ Lua Script는 굉장히 작고 가벼운 인터프리터형 언어이다. 제일
 
 ### Lua Script로 주문 기능 수정 <a href="#lua-script" id="lua-script"></a>
 
-```
-    String luaScript = "for i = 1, #ARGV, 2 do\n" +
-            "    local key = KEYS[(i+1)/2]\n" +
-            "    local max_stock = tonumber(ARGV[i])\n"+
-            "    local increment = tonumber(ARGV[i + 1])\n" +
-            "    local current_stock = tonumber(redis.call('GET', key) or '0')\n" +
-            "    local new_stock = current_stock + increment\n" +
-            "    if new_stock > max_stock then\n" +
-            "        return redis.error_reply('Stock limit exceeded for key: ' .. key)\n" +
-            "    end\n" +
-            "    redis.call('SET', key, new_stock)\n" +
-            "end\n" +
-            "return 'OK'";
+```java
+    String luaScript = """
+            local commands = {}
+            for i = 1, #ARGV, 3 do
+                local key = KEYS[(i+2)/3]
+                local max_stock = tonumber(ARGV[i])
+                local increment = tonumber(ARGV[i + 1])
+                local acc_key = ARGV[i + 2]
+                local current_acc_stock = tonumber(redis.call('GET', acc_key) or '0')
+                local new_acc_stock = current_acc_stock + increment
+                -- redis.call('SET', acc_key, new_acc_stock)
+                local current_stock = tonumber(redis.call('GET', key) or '0')
+                local new_stock = current_stock + increment
+                if new_stock > max_stock then
+                    return redis.error_reply('Stock limit exceeded for key: ' .. key)
+                end
+                -- redis.call('SET', key, new_stock)
+                table.insert(commands,key)
+                table.insert(commands,new_stock)
+            end
+            
+            for i =1, #commands, 2 do
+                local key = commands[i]
+                local value = tonumber(commands[i+1])
+                redis.call('SET', key, value);
+            end
+            
+            return 'OK'
+            """;
 
     public void redisStockUpdate(List<OrderRequest> orderRequestList, HashMap<Long,Integer> maxStockMap) throws RedisSystemException{
         HashMap<String,OrderStockDTO> keyCountMap =orderRequestListToHashMap(orderRequestList,maxStockMap);
@@ -81,8 +97,11 @@ Lua Script를 활용해 재고를 확인하고 주문해서 재고를 감소시�
 
 * **주문별 원자성 보장을 통해 재고에 대한 정확도 보장**\
   Lua Script를 통해 주문별로 원자성을 보장하여 재고를 소진시키기 때문에 다른 주문과 동시에 요청이 들어와도 정합성의 문제를 일으키지 않는다.
-* **주문별 원자성으로 인해 재고 부족시 주문에 대해 롤백**\
-  같은 주문내에서 특정 물건의 재고 부족으로 소진되면 같은 주문이 모두 롤백되기 때문에 다시 되돌리는 작업을 수행하지 않아도 된다.
+* **주문별 원자성으로 인해 재고 부족시 주문에 대해 롤백** 같은 주문내에서 특정 물건의 재고 부족으로 소진되면 같은 주문에 대한 명령어가 실행되지 않게 구현하였기 때문에 다시 되돌리는 작업을 수행하지 않아도 된다.
+
+#### Redis는 Rollback이 되지 않는다?
+
+처음에는 LuaScript 하나의 for문에서 주석처리한 것과 같이 key를 set하는 명령을 추가하려 하였으나 Redis는 성능을 위해서 Rollback을 제공하지 않기 때문에 재고 확인이 모두 확인 되어야 명령이 실행되도록 작업하였다.
 
 ### 동작 <a href="#undefined" id="undefined"></a>
 
