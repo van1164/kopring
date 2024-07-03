@@ -72,3 +72,10 @@
 
 * [Fixture Monkey 적용기](tdd/fixture-monkey.md)
 * [JUnit으로 동시성문제를 테스트할 수 있게 해보자! (라이브러리 개발기)](tdd/junit.md)
+
+## 🎨 Design-Pattern
+
+* [싱글톤 패턴](design-pattern/undefined.md)
+* [팩토리 패턴](design-pattern/undefined-1.md)
+* [전략 패턴](design-pattern/undefined-2.md)
+* [옵저버 패턴](design-pattern/undefined-3.md)
