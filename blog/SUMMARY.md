@@ -1,8 +1,6 @@
 # Table of contents
 
 * [van1164 학습 블로그](README.md)
-* [Page 1](page-1.md)
-* [Page](page.md)
 
 ## 🍀 spring-webflux
 
@@ -63,26 +61,33 @@
 * [좋아요 기능 최적화 (feat. redis)](redis/feat.-redis.md)
 * [Redis Lua Script를 활용해서 주문 기능 원자성 보장](redis/redis-lua-script.md)
 
-## 📗 토비의 스프링 <a href="#tobi-spring" id="tobi-spring"></a>
+## Back-End
 
-* [토비의 스프링 1장](tobi-spring/1.md)
-* [토비의 스프링 2장](tobi-spring/2.md)
-* [토비의 스프링 3장](tobi-spring/3.md)
-* [토비의 스프링 4장](tobi-spring/4.md)
-* [토비의 스프링 5장](tobi-spring/5.md)
-
-## TDD
-
-* [Fixture Monkey 적용기](tdd/fixture-monkey.md)
-* [JUnit으로 동시성문제를 테스트할 수 있게 해보자! (라이브러리 개발기)](tdd/junit.md)
-
-## 🎨 Design-Pattern
-
-* [싱글톤 패턴](design-pattern/undefined.md)
-* [팩토리 패턴](design-pattern/undefined-1.md)
-* [전략 패턴](design-pattern/undefined-2.md)
-* [옵저버 패턴](design-pattern/undefined-3.md)
+* [TDD](back-end/tdd/README.md)
+  * [Fixture Monkey 적용기](back-end/tdd/fixture-monkey.md)
+  * [JUnit으로 동시성문제를 테스트할 수 있게 해보자! (라이브러리 개발기)](back-end/tdd/junit.md)
+* [Spring](back-end/spring/README.md)
+  * [📗 토비의 스프링](back-end/spring/undefined/README.md)
+    * [토비의 스프링 1장](back-end/spring/undefined/1.md)
+    * [토비의 스프링 2장](back-end/spring/undefined/2.md)
+    * [토비의 스프링 3장](back-end/spring/undefined/3.md)
+    * [토비의 스프링 4장](back-end/spring/undefined/4.md)
+    * [토비의 스프링 5장](back-end/spring/undefined/5.md)
 
 ## AWS
 
 * [Spring에서 ElastiCache로 Redis 적용하기](aws/spring-elasticache-redis.md)
+
+## Mobile
+
+* [Android](mobile/android.md)
+* [IOS](mobile/ios.md)
+* [Kotlin-Multi-Platform](mobile/kotlin-multi-platform.md)
+
+## CS
+
+* [🎨 디자인 패턴](cs/undefined/README.md)
+  * [싱글톤 패턴](cs/undefined/undefined.md)
+  * [팩토리 패턴](cs/undefined/undefined-1.md)
+  * [전략 패턴](cs/undefined/undefined-2.md)
+  * [옵저버 패턴](cs/undefined/undefined-3.md)
