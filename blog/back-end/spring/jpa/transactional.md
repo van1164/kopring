@@ -53,7 +53,7 @@ update trip set name='100' where id=1;
 
 Spring에서는 `@Transactional`을 통해 트랜잭션 단위를 지정하는데, 이 어노테이션을 지정한 함수 내에서 조회하면 엔티티를 영속성 컨텍스트(1차 캐시)와 스냅샷에 저장해두었다가 트랜잭션내에서 1차캐시의 값을 수정하고 트랜잭션이 끝나면 1차 캐시값과 스냅샷을 비교해서 다르면 Update 쿼리를 실행한다.&#x20;
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 **1. 조회할 때 1차캐시와 스냅샷에 초기상태 저장**
 

@@ -12,8 +12,8 @@
 
 ### Redis를 활용한 조회 수 구현 <a href="#redis" id="redis"></a>
 
-{% content-ref url="../redis/feat.-redis.md" %}
-[feat.-redis.md](../redis/feat.-redis.md)
+{% content-ref url="../../back-end/redis/feat.-redis.md" %}
+[feat.-redis.md](../../back-end/redis/feat.-redis.md)
 {% endcontent-ref %}
 
 위 포스트에서 Redis의 increment를 사용해서 조회 수를 증가 시키고 1분마다 데이터베이스에 업데이트해주는 구현을 진행하였다.

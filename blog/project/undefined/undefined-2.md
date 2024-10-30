@@ -1,4 +1,4 @@
-# Page 1
+# 배포하면서 발생한 문제들
 
 ## 구상한 배포 아키텍쳐
 
@@ -70,4 +70,4 @@ server {
 
 
 
-<figure><img src="../.gitbook/assets/image.gif" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image.gif" alt=""><figcaption></figcaption></figure>
