@@ -66,11 +66,40 @@ icon: aws
 
 
 
-### Debezium Source cCosdf
+### Debezium Source Connector
 
 올리브영에서 오프라인 DB와 온라인 DB를 마이그레이션할 필요가 있었음.
+
+Oracle DB를 Debezium Source Connector과 MSK Connector에 연결해서 다른 DB로 연결
 
 로그기반, 쿼리기반 방식 존재
 
 
+
+***
+
+## 혼자서도 만들 수 있는 클라우드 기반 장애 알람 서비스
+
+### 장애 알림 내재화 문제
+
+콘텐츠가 부족한 기존 장애 Slack 알람
+
+빠른 알람 필요
+
+### Amazon Connect
+
+장애 발생시 트리거를 받아 장애 내용을 전달해 주는 방향 사용 가능
+
+전화애 대한 재다이얼, 내용, 전달등등 다양한 시나리오 적용 가능
+
+### Amazon End User Messaging
+
+문자 메시지 전송 API
+
+
+
+### Badrock사용
+
+LLM을 사용해 텍스트 생성, 요약을 쉽게 구현.\
+이를 활용해서 오류를 받아서 그대로 전달하는게 아니라 Badrock을 사용해서 어떤 문제이고 어떻게 해결해야하는지 같이 전달.
 
