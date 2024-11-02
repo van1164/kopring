@@ -103,3 +103,120 @@ Oracle DB를 Debezium Source Connector과 MSK Connector에 연결해서 다른 D
 LLM을 사용해 텍스트 생성, 요약을 쉽게 구현.\
 이를 활용해서 오류를 받아서 그대로 전달하는게 아니라 Badrock을 사용해서 어떤 문제이고 어떻게 해결해야하는지 같이 전달.
 
+
+
+***
+
+## API 시큐리티
+
+### Monolithic -> MSA
+
+단일 유저 엔드포인트에서 기능 단위로 수많은 유저 엔드포이트 노출\
+
+
+### OWASP API Security
+
+
+
+#### 1. Broken Object Level Authentication
+
+API에서 타인의 정보 조회시도에도 응답한다면 문제가 발생
+
+\[대안]
+
+JWT등을 활용하여 요청자의 정보를 대조하는 등의 행위를 통해 권한 요청이 적절하게 인가된 것인지 확인. 또한 무작위 대입 공격을 방어필요.
+
+
+
+#### 2. Broken Authentication
+
+#### &#x20;인가되지 않은 사용자가 인증에 성공할 수 있음.
+
+\[대안] Brute Forece를 막기 위해 로그인 시도 횟수 제한 필요
+
+AWS WAF등을 사용해서 URI + IP로 제한하여 큰 효과를 볼 수 있음
+
+
+
+#### 3. Broken Object Property Level Authentication
+
+사용자 입력 대로 문제 발생 가능
+
+\[대안]
+
+필요한 속성만 선택햐여 받는 것이 필요
+
+
+
+#### 4. Unrestricted Resource Consumption
+
+만약 공격자가 비번 찾기 SMS에 10000 번 사용한다면? 과 같이 공격자의 공격
+
+
+
+\[대안]
+
+단ㄴ위 시간마다 실행 횟수를 제한 권고
+
+
+
+#### 5. Broken Function Level Authentication
+
+API에서 사용자가 인가되지 않는 API사용 하는 문제
+
+\[대안]
+
+동일 API에 대하여 사용자 별 기능 구현 수준 차이 구현 필요
+
+
+
+#### 6. Unrestricted access to sensitive businss flows
+
+열차 무료 취소가 가능한 점을 악용해서 열차 좌석을 모두 한사람이 예매해버린다면?
+
+
+
+#### 7. SSRF 취약점에 의해 접근 권한
+
+Server Side Request ㄹForgery
+
+AWS환경에서 불필요한 경우는 IMDS 비활성화 권고
+
+
+
+#### 8. Security Misconfiguration
+
+SSH가 모두에게 오픈되는 문제.
+
+
+
+#### 9. API 인벤토리가 관리되지 않음으로써 생기는 문제
+
+Swagger나 admin페이지가 공개되어 들어갈 수 있다면 문제가 발생
+
+\[대안]
+
+인벤토리 관리시에는 단순히 API뿐만 아니라 파라미터, CORS수준등의 명세 수준까지 관리 필요
+
+
+
+#### Unsafe consumption of apis
+
+써드 파티에서 오는 데이터를 무조건 믿는 것은 문제.
+
+예) 네이버 카카오 가 준 결제 연동 값은 그대로 믿어도 되겠지?\
+\
+
+
+### AWS의 보안
+
+#### Amazon Q Developer
+
+#### Copilot은 데이터를 수집하지만 Amazon Q Developer는 수집을 끌 수 있기 때문에 장점이 있음
+
+
+
+#### Amazon Codeguru Reviewer
+
+#### 코드 퀄리티나 보안 취약점을 확인해주는 서비스&#x20;
+
