@@ -78,3 +78,7 @@
   * [팩토리 패턴](cs/undefined/undefined-1.md)
   * [전략 패턴](cs/undefined/undefined-2.md)
   * [옵저버 패턴](cs/undefined/undefined-3.md)
+
+***
+
+* [AWS Community Day2024](aws-community-day2024.md)
