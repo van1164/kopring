@@ -78,8 +78,8 @@ fun uploadVideoPartLast(fileUUID : String, totalChunk : Int): Flux<ServerSentEve
  org.springframework.web.context.request.async.AsyncRequestTimeoutException
 ```
 
-> 비동기로 처리를 했더니 다음과 같은 오류에 직면하였다. 오류를 보니 timeout이 발생한 것으로 보인다. 그래서 찾아보니 spring에서 `spring.mvc.async.request-timeout=시간`을 통해 **`timeout`**을 늘릴 수있다고 했다.\
-> 하지만, 이걸 늘리는건 근본적인 해결법이 아니라고 생각했다. **`timeout`**을 늘린다고 해도 오류만 발생하지 않을 뿐이지 사용자가 기다려야하는 시간은 길어지고, 나중에 해상도 처리와 같은 로직을 추가하게 된다면 늘린 **`timeout`**을 더 늘려야하는 상황이 생길 것이라고 생각했기 때문이다.
+> 비동기로 처리를 했더니 다음과 같은 오류에 직면하였다. 오류를 보니 timeout이 발생한 것으로 보인다. 그래서 찾아보니 spring에서 `spring.mvc.async.request-timeout=시간`을 통해 **`timeout`**&#xC744; 늘릴 수있다고 했다.\
+> 하지만, 이걸 늘리는건 근본적인 해결법이 아니라고 생각했다. **`timeout`**&#xC744; 늘린다고 해도 오류만 발생하지 않을 뿐이지 사용자가 기다려야하는 시간은 길어지고, 나중에 해상도 처리와 같은 로직을 추가하게 된다면 늘린 **`timeout`**&#xC744; 더 늘려야하는 상황이 생길 것이라고 생각했기 때문이다.
 
 ***
 
@@ -204,7 +204,7 @@ fun uploadVideoPartLast(fileUUID : String, totalChunk : Int): Flux<ServerSentEve
 > **`Server Sent Event`** 를 통해서 **`WebFlux`** 의 스트림이 진행되는 중간마다 Event를 방출해서 업로드가 얼마나 진행되었는지, 현재는 어디까지 진행되었는지에 대한 이벤트를 방출할 수 있었다.\
 > 처음에는 `TIMEOUT`만을 해결해보고자 적용한 **`Server Sent Event`** 였는데, 적용해보니 사용자에게 서버에서 일어나고 있는 상태를 알려주는 좋은 방식의 적용이었다고 생각한다.
 >
-> 추후에는 라이브 스트리밍도 구현을 계획중인데, **`Server Sent Event`**나 **`WebSocket`**을 사용한 실시간 채팅 서비스도 구현해볼 예정이다.
+> 추후에는 라이브 스트리밍도 구현을 계획중인데, **`Server Sent Event`**&#xB098; **`WebSocket`**&#xC744; 사용한 실시간 채팅 서비스도 구현해볼 예정이다.
 
 #### 😊 참고 <a href="#undefined" id="undefined"></a>
 

@@ -2,7 +2,7 @@
 
 ![](https://velog.velcdn.com/images/van1164/post/53a75b49-31ec-4b14-86f4-389f732cff63/image.png)
 
-> **`nGrinder`**란 네이버에서 진행한 오픈 소스 프로젝트로 **서버의 부하 테스트**를 위한 도구이다.
+> **`nGrinder`**&#xB780; 네이버에서 진행한 오픈 소스 프로젝트로 **서버의 부하 테스트**를 위한 도구이다.
 
 #### nGrinder는 크게 `Controller`와 `Agent`로 이루어져있다. <a href="#ngrinder-controller-agent" id="ngrinder-controller-agent"></a>
 

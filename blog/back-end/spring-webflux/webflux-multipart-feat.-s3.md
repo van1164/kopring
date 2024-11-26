@@ -14,7 +14,7 @@ fun testOne(@RequestPart(name = "video") video: MultipartFile, title : String): 
 
 Servlet방식의 `Spring`을 사용할 때는 전혀 이상없이 동작했던 코드입니다. 아마 대부분의 `Spring`개발자분들이 이런 방식을 통해서 이미지나 동영상을 업로드받을 것이다.
 
-**심지어** 환경을 리액티브로 바꾸지 않고 **`Webflux(안의 Reactor)`**만 사용할 때에는 이런 문제가 생기지 않았다. 하지만 모든 요청과 Security를 리액티브로 변경하기 위해 다음과 같이 `Properties`를 적용해주었다.
+**심지어** 환경을 리액티브로 바꾸지 않고 **`Webflux(안의 Reactor)`**&#xB9CC; 사용할 때에는 이런 문제가 생기지 않았다. 하지만 모든 요청과 Security를 리액티브로 변경하기 위해 다음과 같이 `Properties`를 적용해주었다.
 
 ```
 spring.main.web-application-type=reactive

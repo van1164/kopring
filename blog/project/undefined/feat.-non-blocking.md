@@ -204,9 +204,9 @@ stopWatch.stop()
 
 > **S3 Object를 여러 개 동시에 읽어올 때 생길 수있는 문제**
 
-amazonS3 `S3Object`를 close해주지 않았기 때문에 다음과 같은 오류가 발생하였다. `S3Object`는 `Closeable`을 **implements**하고 있기 때문에 **`try-with-resources`**를 사용할 수있다.
+amazonS3 `S3Object`를 close해주지 않았기 때문에 다음과 같은 오류가 발생하였다. `S3Object`는 `Closeable`을 **implements**하고 있기 때문에 **`try-with-resources`**&#xB97C; 사용할 수있다.
 
-**`try-with-resources`**란 `AutoCloseable` 인터페이스를 구현하고 있는 자원에 대해 try안에 그 자원을 넣으면 작업이 끝나면 **자동으로 close**해주는 것을 말한다.
+**`try-with-resources`**&#xB780; `AutoCloseable` 인터페이스를 구현하고 있는 자원에 대해 try안에 그 자원을 넣으면 작업이 끝나면 **자동으로 close**해주는 것을 말한다.
 
 ![](https://velog.velcdn.com/images/van1164/post/c37bf012-f634-4442-bd6f-bf74c4d24241/image.png)
 

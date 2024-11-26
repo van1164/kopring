@@ -1,4 +1,4 @@
-# Reactor (feat. R2DBC)
+# R2DBC 정리
 
 ![](https://velog.velcdn.com/images/van1164/post/537fa879-831b-4d57-842b-1105a732677c/image.png)
 
@@ -26,8 +26,8 @@
 **구문**
 
 **`bind`**: sql에 파라미터를 binding하는 구문\
-**`add`** : 이전 까지의 binding을 저장 후 새로운 binding생성\
-**`execute`** : 생성된 binding만큼 쿼리를 실행 후 결과를 Publisher 형태로 제공
+&#xNAN;**`add`** : 이전 까지의 binding을 저장 후 새로운 binding생성\
+&#xNAN;**`execute`** : 생성된 binding만큼 쿼리를 실행 후 결과를 Publisher 형태로 제공
 
 ### R2DBC MySql <a href="#r2dbc-mysql" id="r2dbc-mysql"></a>
 

@@ -2,7 +2,7 @@
 
 ## 유효성 검증
 
-다음과 같은 **`TripDto`**를 RequestBody로 받는 컨틀롤러가 있다고 가정해보자.
+다음과 같은 **`TripDto`**&#xB97C; RequestBody로 받는 컨틀롤러가 있다고 가정해보자.
 
 ```java
 @PostMapping("")
@@ -184,7 +184,7 @@ public CustomResponseBody futureTrip(
 
 @Valid는 **`MethodArgumentNotValidException`**
 
-@Validated 는**`ConstraintViolationException`**
+@Validated &#xB294;**`ConstraintViolationException`**
 
 로 발생시키는 Exception의 차이가 있다.
 
