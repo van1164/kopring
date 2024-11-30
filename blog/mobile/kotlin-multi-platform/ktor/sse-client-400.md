@@ -66,7 +66,35 @@ ktorSSEClient.sse(host = SSE_BASE_URL, path = "/api/v1/chat/stream/$roomId",port
 하지만, 이상한 점은 \
 ![](<../../../.gitbook/assets/image (1).png>)
 
-포스트맨이나 curl명령으로 요청을 보낼 때는 이상이 없다는 것이다.
+포스트맨이나 curl명령으로 요청을 보낼 때는 이상이 없다는 것이다.\
+\
+
+
+## 해결
+
+```kotlin
+ktorSSEClient.sse(
+    url,
+    reconnectionTime = 3.seconds
+) {
+    headers {
+        append(HttpHeaders.Accept, "text/event-stream")
+        append(HttpHeaders.Connection, "keep-alive")
+        append(HttpHeaders.ContentType, "application/json")
+    }
+    parameters {
+        jwt?.let { append("token", it) }
+    }
+
+    incoming.collect { event ->
+        event.data?.let { Json.decodeFromString(ChatMessage.serializer(), it) }?.let {
+            send(it)
+        }
+    }
+}
+```
+
+정확한 원인은 파악하지 못했지만, sse 구현된 부분을 찾아보니 url로 요청을 보내는 메소드를 제공해주고 있어서 적용해보니 해결되었다!
 
 
 
