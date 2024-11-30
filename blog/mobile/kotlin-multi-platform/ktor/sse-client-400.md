@@ -55,7 +55,7 @@ ktorSSEClient.sse(host = SSE_BASE_URL, path = "/api/v1/chat/stream/$roomId",port
 
 하지만, 이를 서버에 올렸더니
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 이런 오류를 뱉는다...
 
@@ -64,7 +64,7 @@ ktorSSEClient.sse(host = SSE_BASE_URL, path = "/api/v1/chat/stream/$roomId",port
 #### 현재까지는 로드 밸런서에서 거부하는 것으로 파악하고 있다.
 
 하지만, 이상한 점은 \
-![](<../../../.gitbook/assets/image (1).png>)
+![](<../../../.gitbook/assets/image (1) (1).png>)
 
 포스트맨이나 curl명령으로 요청을 보낼 때는 이상이 없다는 것이다.\
 \
