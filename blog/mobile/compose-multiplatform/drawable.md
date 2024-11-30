@@ -13,4 +13,11 @@ Image(
 )
 ```
 
-이렇게 Res를 통해 접근이 가능하다.
+이렇게 Res를 통해 접근이 가능하다.\
+
+
+## 참고
+
+{% embed url="https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-resources-setup.html#custom-resource-directories" %}
+
+{% embed url="https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-resources-usage.html" %}
