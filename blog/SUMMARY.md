@@ -72,6 +72,8 @@
 * [Android](mobile/android/README.md)
   * [Compose](mobile/android/compose/README.md)
     * [drawable 이미지 띄우기](mobile/android/compose/drawable.md)
+  * [Hilt](mobile/android/hilt/README.md)
+    * [Hilt란?](mobile/android/hilt/hilt.md)
 * [IOS](mobile/ios/README.md)
   * [Kakao Adfit](mobile/ios/kakao-adfit/README.md)
     * [준비](mobile/ios/kakao-adfit/undefined.md)
