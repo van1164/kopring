@@ -84,6 +84,7 @@
 * [Compose Multiplatform](mobile/compose-multiplatform/README.md)
   * [Drawable 같이 사용하기](mobile/compose-multiplatform/drawable.md)
   * [IOS 키보드 내리기](mobile/compose-multiplatform/ios.md)
+  * [Koin](mobile/compose-multiplatform/koin.md)
 
 ## CS
 
