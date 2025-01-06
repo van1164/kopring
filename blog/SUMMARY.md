@@ -5,6 +5,8 @@
   * [Programmers](codingtest/programmers/README.md)
     * [LV0](codingtest/programmers/lv0/README.md)
       * [세 개의 구분자](codingtest/programmers/lv0/undefined.md)
+  * [Study](codingtest/study/README.md)
+    * [StringBuilder](codingtest/study/stringbuilder.md)
 
 ## Back-End
 

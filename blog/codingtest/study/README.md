@@ -1,0 +1,6 @@
+---
+icon: graduation-cap
+---
+
+# Study
+
