@@ -50,6 +50,10 @@
   * [Redis Lua Script를 활용해서 주문 기능 원자성 보장](back-end/redis/redis-lua-script.md)
 * [MongoDB](back-end/mongodb/README.md)
   * [MongoDB에서](back-end/mongodb/mongodb.md)
+* [Django](back-end/django/README.md)
+  * [Admin](back-end/django/admin/README.md)
+    * [데코레이터](back-end/django/admin/undefined/README.md)
+      * [@admin.register](back-end/django/admin/undefined/admin.register.md)
 
 ## 프로젝트 <a href="#project" id="project"></a>
 
