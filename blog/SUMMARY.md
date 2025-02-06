@@ -73,11 +73,12 @@
   * [댓글 좋아요 구현 (feat. 동시성 문제)](project/undefined/feat..md)
   * [좋아요, 조회수 기능 최적화 (feat. Redis + AWS Lambda)](project/undefined/feat.-redis-+-aws-lambda.md)
 
-## AWS
+## Cloud
 
-* [Spring에서 ElastiCache로 Redis 적용하기](aws/spring-elasticache-redis.md)
-* [CloudFlare + ACM + EC2 로 Https 적용기](aws/cloudflare-+-acm-+-ec2-https.md)
-* [CNAME이란?](aws/cname.md)
+* [AWS](cloud/aws/README.md)
+  * [CNAME이란?](cloud/aws/cname.md)
+  * [CloudFlare + ACM + EC2 로 Https 적용기](cloud/aws/cloudflare-+-acm-+-ec2-https.md)
+  * [Spring에서 ElastiCache로 Redis 적용하기](cloud/aws/spring-elasticache-redis.md)
 
 ## Mobile
 

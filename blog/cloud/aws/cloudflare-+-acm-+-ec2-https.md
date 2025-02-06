@@ -10,7 +10,7 @@ icon: cloudflare
 
 
 
-<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 대표님께서는 https적용을 하며 SSL인증서가 자동으로 갱신되도록 구현을 요청하셨다.
 
