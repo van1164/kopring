@@ -54,6 +54,8 @@
   * [Admin](back-end/django/admin/README.md)
     * [데코레이터](back-end/django/admin/undefined/README.md)
       * [@admin.register](back-end/django/admin/undefined/admin.register.md)
+  * [라이브러리](back-end/django/undefined/README.md)
+    * [django‑select2](back-end/django/undefined/django-select2.md)
 
 ## 프로젝트 <a href="#project" id="project"></a>
 
