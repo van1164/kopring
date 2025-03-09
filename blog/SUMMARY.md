@@ -48,6 +48,7 @@
 * [Redis](back-end/redis/README.md)
   * [좋아요 기능 최적화 (feat. redis)](back-end/redis/feat.-redis.md)
   * [Redis Lua Script를 활용해서 주문 기능 원자성 보장](back-end/redis/redis-lua-script.md)
+  * [Redis 파이썬 클라이언트와 Redis CLI에서 자주 쓰는 명령어 정리](back-end/redis/redis-redis-cli.md)
 * [MongoDB](back-end/mongodb/README.md)
   * [MongoDB에서](back-end/mongodb/mongodb.md)
 * [Django](back-end/django/README.md)
