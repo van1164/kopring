@@ -1,12 +1,6 @@
 # Table of contents
 
 * [van1164 학습 블로그](README.md)
-* [CodingTest](codingtest/README.md)
-  * [Programmers](codingtest/programmers/README.md)
-    * [LV0](codingtest/programmers/lv0/README.md)
-      * [세 개의 구분자](codingtest/programmers/lv0/undefined.md)
-  * [Study](codingtest/study/README.md)
-    * [StringBuilder](codingtest/study/stringbuilder.md)
 
 ## Back-End
 
@@ -87,9 +81,11 @@
 
 * [Android](mobile/android/README.md)
   * [Compose](mobile/android/compose/README.md)
+    * [Hilt](mobile/android/compose/hilt/README.md)
+      * [Hilt란?](mobile/android/compose/hilt/hilt.md)
     * [drawable 이미지 띄우기](mobile/android/compose/drawable.md)
-  * [Hilt](mobile/android/hilt/README.md)
-    * [Hilt란?](mobile/android/hilt/hilt.md)
+  * [Legacy](mobile/android/legacy/README.md)
+    * [기존 TabHost 방식에서 Activity탭 상태 변경하는 방법](mobile/android/legacy/tabhost-activity.md)
 * [IOS](mobile/ios/README.md)
   * [Kakao Adfit](mobile/ios/kakao-adfit/README.md)
     * [준비](mobile/ios/kakao-adfit/undefined.md)
@@ -105,6 +101,12 @@
 
 ## CS
 
+* [CodingTest](cs/codingtest/README.md)
+  * [Programmers](cs/codingtest/programmers/README.md)
+    * [LV0](cs/codingtest/programmers/lv0/README.md)
+      * [세 개의 구분자](cs/codingtest/programmers/lv0/undefined.md)
+  * [Study](cs/codingtest/study/README.md)
+    * [StringBuilder](cs/codingtest/study/stringbuilder.md)
 * [🎨 디자인 패턴](cs/undefined/README.md)
   * [싱글톤 패턴](cs/undefined/undefined.md)
   * [팩토리 패턴](cs/undefined/undefined-1.md)
