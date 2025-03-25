@@ -86,6 +86,7 @@
     * [drawable 이미지 띄우기](mobile/android/compose/drawable.md)
   * [Legacy](mobile/android/legacy/README.md)
     * [기존 TabHost 방식에서 Activity탭 상태 변경하는 방법](mobile/android/legacy/tabhost-activity.md)
+    * [스와이프시 클릭되는 문제 해결](mobile/android/legacy/undefined.md)
 * [IOS](mobile/ios/README.md)
   * [Kakao Adfit](mobile/ios/kakao-adfit/README.md)
     * [준비](mobile/ios/kakao-adfit/undefined.md)
