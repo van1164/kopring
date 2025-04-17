@@ -23,7 +23,7 @@ iOS 15부터 `UITableView`의 **섹션 헤더 위쪽에 기본 패딩**이 추�
 #### **✅ 해결 코드**
 
 ```objc
-objc복사편집- (void)viewDidLoad {
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     if (@available(iOS 15.0, *)) {
