@@ -45,6 +45,7 @@
   * [switchIfEmpty 와 defaultIfEmpty 차이](back-end/spring-webflux/switchifempty-defaultifempty.md)
   * [Webflux환경에서 JWT 사용하기](back-end/spring-webflux/webflux-jwt.md)
   * [@AuthenticationPrincipal에 null값 들어오는 문제](back-end/spring-webflux/authenticationprincipal-null.md)
+  * [WebFlux로 실시간 채팅 SSE 만들기](back-end/spring-webflux/webflux-sse.md)
 * [Redis](back-end/redis/README.md)
   * [좋아요 기능 최적화 (feat. redis)](back-end/redis/feat.-redis.md)
   * [Redis Lua Script를 활용해서 주문 기능 원자성 보장](back-end/redis/redis-lua-script.md)
@@ -120,8 +121,7 @@
   * [팩토리 패턴](cs/undefined/undefined-1.md)
   * [전략 패턴](cs/undefined/undefined-2.md)
   * [옵저버 패턴](cs/undefined/undefined-3.md)
-* [프로토콜](cs/undefined-1/README.md)
-  * [WebFlux로 실시간 채팅 SSE 만들기](cs/undefined-1/webflux-sse.md)
+* [프로토콜](cs/undefined-1.md)
 
 ***
 
