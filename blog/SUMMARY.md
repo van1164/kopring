@@ -59,6 +59,10 @@
   * [라이브러리](back-end/django/undefined/README.md)
     * [django‑select2](back-end/django/undefined/django-select2.md)
 
+## LLM
+
+* [GPT Function Calling으로 파이프라인 갈아엎기](llm/gpt-function-calling.md)
+
 ## 프로젝트 <a href="#project" id="project"></a>
 
 * [동영상 스트리밍 프로젝트](project/undefined/README.md)
