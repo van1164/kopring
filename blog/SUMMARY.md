@@ -14,12 +14,6 @@
   * [Fixture Monkey 적용기](back-end/tdd/fixture-monkey.md)
   * [JUnit으로 동시성문제를 테스트할 수 있게 해보자! (라이브러리 개발기)](back-end/tdd/junit.md)
 * [Spring](back-end/spring/README.md)
-  * [📗 토비의 스프링](back-end/spring/undefined/README.md)
-    * [토비의 스프링 1장](back-end/spring/undefined/1.md)
-    * [토비의 스프링 2장](back-end/spring/undefined/2.md)
-    * [토비의 스프링 3장](back-end/spring/undefined/3.md)
-    * [토비의 스프링 4장](back-end/spring/undefined/4.md)
-    * [토비의 스프링 5장](back-end/spring/undefined/5.md)
   * [Spring](back-end/spring/spring/README.md)
     * [빈 스코프에 대해서](back-end/spring/spring/undefined.md)
     * [@Validated와 @Valid를 통한 유효성검사](back-end/spring/spring/validated-valid.md)
@@ -126,6 +120,15 @@
   * [전략 패턴](cs/undefined/undefined-2.md)
   * [옵저버 패턴](cs/undefined/undefined-3.md)
 * [프로토콜](cs/undefined-1.md)
+* [책](cs/undefined-2/README.md)
+  * [📗 토비의 스프링](cs/undefined-2/undefined/README.md)
+    * [토비의 스프링 1장](cs/undefined-2/undefined/1.md)
+    * [토비의 스프링 2장](cs/undefined-2/undefined/2.md)
+    * [토비의 스프링 3장](cs/undefined-2/undefined/3.md)
+    * [토비의 스프링 4장](cs/undefined-2/undefined/4.md)
+    * [토비의 스프링 5장](cs/undefined-2/undefined/5.md)
+  * [코틀린 코루틴의 정성](cs/undefined-2/undefined-1/README.md)
+    * [Dispatchers.IO와 Dispatchers.Default(작성중)](cs/undefined-2/undefined-1/dispatchers.io-dispatchers.default.md)
 
 ***
 
