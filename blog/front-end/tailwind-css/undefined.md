@@ -36,3 +36,8 @@
 * `light`(또는 `normal`)로 돌려놓으면 브라우저는 “이 iframe은 밝은 스킴”으로 판단해 초기 배경을 **투명**으로 유지한다.
 * Twitter가 iframe 내부에서 직접 다크 테마 배경을 칠하므로, Twitter는 다크모드로 보인다.
 
+## 4. 참고
+
+> **mkdocs-material**: “Dark mode embeds show white tweet corners” 이슈 #6889\
+> [https://github.com/squidfunk/mkdocs-material/issues/6889?utm\_source=chatgpt.com](https://github.com/squidfunk/mkdocs-material/issues/6889?utm_source=chatgpt.com)
+
