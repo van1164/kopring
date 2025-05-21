@@ -6,6 +6,7 @@
 
 * [Tailwind CSS](front-end/tailwind-css/README.md)
   * [iOS 웹뷰에서 fixed한 광고가 사라지는 문제](front-end/tailwind-css/ios-fixed.md)
+  * [다크 모드에서 트윗 임베드 '흰색 모서리' 현상](front-end/tailwind-css/undefined.md)
 * [NEXT.JS](front-end/next.js.md)
 
 ## Back-End

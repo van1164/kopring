@@ -2,7 +2,7 @@
 
 project View로 보기 한다음 commonMain -> composeResources에 xml을 넣으면 빌드시 자동생성된다.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 ```kotlin
 Image(
