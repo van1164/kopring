@@ -98,6 +98,8 @@
     * [준비](mobile/ios/kakao-adfit/undefined.md)
     * [SwiftUI 배너 광고](mobile/ios/kakao-adfit/swiftui.md)
   * [TableView 기본 상단 패딩 제거](mobile/ios/tableview.md)
+  * [SWIFT 정리](mobile/ios/swift/README.md)
+    * [딕셔너리 (Hash Map)](mobile/ios/swift/hash-map.md)
 * [Kotlin-Multi-Platform](mobile/kotlin-multi-platform/README.md)
   * [Ktor](mobile/kotlin-multi-platform/ktor/README.md)
     * [SSE Client 400 에러](mobile/kotlin-multi-platform/ktor/sse-client-400.md)
