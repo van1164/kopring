@@ -28,6 +28,8 @@
     * [Spring 코드에서의 트랜잭션과 DB에서의 트랜잭션](back-end/spring/jpa/spring-db.md)
     * [JPA 페이지네이션 최적화 (Offset, Cusor, 커버링 인덱스)](back-end/spring/jpa/jpa-offset-cusor.md)
 * [Spring Webflux](back-end/spring-webflux/README.md)
+  * [Reactive 흐름 제어 패턴 정리](back-end/spring-webflux/reactive/README.md)
+    * [flatMap vs flatMapMany](back-end/spring-webflux/reactive/flatmap-vs-flatmapmany.md)
   * [동기 vs 비동기, Blocking vs Non-Blocking](back-end/spring-webflux/vs-blocking-vs-non-blocking.md)
   * [Executor Service와 Future, 그리고 CompletableFuture](back-end/spring-webflux/executor-service-future-completablefuture.md)
   * [Webflux 환경에서 MultiPart로 파일 업로드 (feat. S3 업로드하는 법까지)](back-end/spring-webflux/webflux-multipart-feat.-s3.md)
