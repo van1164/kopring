@@ -114,6 +114,7 @@
   * [IOS 키보드 내리기](mobile/compose-multiplatform/ios.md)
   * [Koin](mobile/compose-multiplatform/koin.md)
   * [상단바 색 투명하게 하기](mobile/compose-multiplatform/undefined.md)
+  * [iOS 언어 설정 가져오기](mobile/compose-multiplatform/ios-1.md)
 
 ## CS
 
