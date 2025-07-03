@@ -56,6 +56,8 @@
       * [@admin.register](back-end/django/admin/undefined/admin.register.md)
   * [라이브러리](back-end/django/undefined/README.md)
     * [django‑select2](back-end/django/undefined/django-select2.md)
+* [기술 공부](back-end/undefined/README.md)
+  * [Server Sent Event를 굳이 쓸 곳이 있을까?](back-end/undefined/server-sent-event.md)
 
 ## LLM
 
