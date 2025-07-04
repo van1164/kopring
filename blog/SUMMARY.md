@@ -58,6 +58,7 @@
     * [django‑select2](back-end/django/undefined/django-select2.md)
 * [기술 공부](back-end/undefined/README.md)
   * [Server Sent Event를 굳이 쓸 곳이 있을까?](back-end/undefined/server-sent-event.md)
+  * [Docker Compose로 CPU·메모리 자원 관리하기](back-end/undefined/docker-compose-cpu.md)
 
 ## LLM
 
